@@ -18,7 +18,7 @@ meta-random:
 
 ---
 
-About link: [OpenAI](/index.html)
+About link: [OpenAI](/)
 
 ## Paragraphs & Line Breaks
 

@@ -6,7 +6,7 @@ DIR_PATH = './content'
 THEME_DIR = './theme'
 STATIC_DIRS_PATH = ['./static', './theme/static/']
 OUTPUT_DIR = './output/'
-BASE_URL = 'file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output'
+BASE_URL = ''
 
 files = load_files(DIR_PATH)
 

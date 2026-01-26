@@ -16,7 +16,7 @@ meta-random:
 
 ###### Heading Level 6
 
-About link: [OpenAI](/about/index.html)
+About link: [OpenAI](/about)
 
 ---
 
