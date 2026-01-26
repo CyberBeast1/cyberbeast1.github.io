@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dump</title>
+    <link rel="stylesheet" href="{{ base_url }}/styles.css">
+    <link rel="stylesheet" href="{{ base_url }}/pygment.css">
+    <!-- <link rel="stylesheet" href="https://raw.githubusercontent.com/numist/highlight-css/refs/heads/main/Other/tomorrow_night_eighties.css"> -->
+</head>
+<body>
+
+  <ul class="nav">
+    <li><a href="{{ base_url }}/index.html">Home</a></li>
+    <li><a href="{{ base_url }}/about/index.html">About</a></li>
+  </ul> 
+
+  <header>
+    {% if page.meta.title %}
+    <h1>{{ page.meta.title }}</h1>
+    {% endif %}
+    <p>
+    {% if page.meta.author %}
+    <strong>Author: {{ page.meta.author }}</strong><br>
+    {% endif %}
+
+    {% if page.meta.date %}
+    <strong>Date: {{ page.meta.date }}</strong><br>
+    {% endif %}
+
+    {% if page.meta.tags %}
+      <strong>Tags: </strong>
+      {% for tag in page.meta.tags %}
+      <code>{{ tag }}</code>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    {% endif %}
+    </p>
+  </header>
+  
+  {% block content %}{% endblock %}
+
+  <footer>
+        <hr>
+        <p>&copy; Made with ♥  by cyber</p>
+    </footer>
+
+</body>
+</html>
+
+
