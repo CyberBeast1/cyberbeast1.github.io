@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dump</title>
+    <link rel="stylesheet" href="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/styles.css">
+    <link rel="stylesheet" href="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/pygment.css">
+    <!-- <link rel="stylesheet" href="https://raw.githubusercontent.com/numist/highlight-css/refs/heads/main/Other/tomorrow_night_eighties.css"> -->
+</head>
+<body>
+
+  <ul class="nav">
+    <li><a href="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/index.html">Home</a></li>
+    <li><a href="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/about/index.html">About</a></li>
+  </ul> 
+
+  <header>
+    
+    <h1>Title Is About</h1>
+    
+    <p>
+    
+    <strong>Author: Cyber</strong><br>
+    
+
+    
+    <strong>Date: 2026-01-26</strong><br>
+    
+
+    
+      <strong>Tags: </strong>
+      
+      <code>markdown</code>, 
+      
+      <code>demo</code>, 
+      
+      <code>test</code>, 
+      
+      <code>parser</code>
+      
+    
+    </p>
+  </header>
+  
+  
+<main>
+    <h1>Heading Level 1</h1>
+<h2>Heading Level 2</h2>
+<h3>Heading Level 3</h3>
+<h4>Heading Level 4</h4>
+<h5>Heading Level 5</h5>
+<h6>Heading Level 6</h6>
+<hr />
+<p>About link: <a href="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/index.html">OpenAI</a></p>
+<h2>Paragraphs &amp; Line Breaks</h2>
+<p>This is a normal paragraph. Markdown collapses<br />
+multiple spaces and respects<br />
+manual line breaks using two spaces at the end of a line.</p>
+<p>This is a new paragraph.</p>
+<hr />
+<h2>Emphasis</h2>
+<p><em>Italic text</em><br />
+<em>Italic text (underscore)</em>  </p>
+<p><strong>Bold text</strong><br />
+<strong>Bold text (underscore)</strong>  </p>
+<p><strong><em>Bold + Italic</em></strong><br />
+<strong><em>Bold + Italic</em></strong>  </p>
+<p>~~Strikethrough~~</p>
+<hr />
+<h2>Blockquotes</h2>
+<blockquote>
+<p>This is a blockquote.</p>
+<blockquote>
+<p>Nested blockquote.</p>
+<blockquote>
+<p>Deeply nested blockquote.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<hr />
+<h2>Lists</h2>
+<h3>Unordered List</h3>
+<ul>
+<li>Item A</li>
+<li>Item B</li>
+<li>Subitem B1</li>
+<li>Subitem B2<ul>
+<li>Sub-subitem</li>
+</ul>
+</li>
+<li>Item C</li>
+</ul>
+<h3>Ordered List</h3>
+<ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Nested ordered item</li>
+<li>Another nested item</li>
+<li>Third item</li>
+</ol>
+<h3>Task List (GFM)</h3>
+<ul>
+<li><input type="checkbox" checked disabled> Completed task</li>
+<li><input type="checkbox" disabled> Incomplete task</li>
+<li><input type="checkbox" disabled> Another task</li>
+</ul>
+<hr />
+<h2>Code</h2>
+<h3>Inline Code</h3>
+<p>Use <code>printf()</code> in C or <code>console.log()</code> in JavaScript.</p>
+<h3>Fenced Code Blocks</h3>
+<div class="codehilite"><pre><span></span><code class="language-c"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, Markdown!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code class="language-zsh">gcc<span class="w"> </span>main.c<span class="w"> </span>-O2<span class="w"> </span>-Wall<span class="w"> </span>-o<span class="w"> </span>app
+./app
+</code></pre></div>
+
+<hr />
+<h2>Horizontal Rules</h2>
+<hr />
+<hr />
+<hr />
+<hr />
+<h2>Links</h2>
+<ul>
+<li>Inline link: <a href="https://openai.com">OpenAI</a></li>
+<li>Reference-style link: <a href="https://github.com">GitHub</a></li>
+</ul>
+<hr />
+<h2>Images</h2>
+<p><img alt="Alt text" src="file:///home/cyber_monarch/Documents/Code/Python/staticSiteGen/site/output/images/coder.jpg" title="Image Title" /></p>
+<!-- ![Alt text](https://via.placeholder.com/300x150 "Image Title") -->
+
+<hr />
+<h2>Tables (GFM)</h2>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Type</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td>Compiled</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Interpreted</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>JVM</td>
+<td>Fast</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Footnotes</h2>
+<p>This sentence has a footnote.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<hr />
+<h2>HTML Inside Markdown</h2>
+<div style="border:1px solid #888; padding:10px; border-radius:6px;">
+<strong>HTML block</strong> inside Markdown.
+</div>
+
+<hr />
+<h2>Emoji</h2>
+<p>🔥 🚀 🧠 💻 📦</p>
+<hr />
+<h2>Math</h2>
+<p>Inline math: <span class="math">$E = mc^2$</span></p>
+<p>
+<div class="math">$$
+\int_0^\infty e^{-x} dx = 1
+$$</div>
+</p>
+<hr />
+<h2>Final Thoughts</h2>
+<p>Markdown is deceptively simple and wonderfully messy.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>This is a simple footnote.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [["$$", "$$"], ['\\[', '\\]']],
+    packages: {
+      '[+]': ['mhchem']
+    }
+  },
+  loader: {
+    load: ['[tex]/mhchem']
+  },
+}
+</script>
+<script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+</main>
+
+
+  <footer>
+        <hr>
+        <p>&copy; Made with ♥  by cyber</p>
+    </footer>
+
+</body>
+</html>
+
