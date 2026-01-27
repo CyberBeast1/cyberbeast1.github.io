@@ -1,12 +1,16 @@
 import os
-from os.path import isdir
+from datetime import datetime
 from pathlib import Path
 from page import Page
 import shutil
 import markdown
 from pygments.formatters import HtmlFormatter, html
 from markdown.extensions.codehilite import CodeHiliteExtension
+import re
+import math
 
+# local to include index.html in end or url and deployed for not(for production)
+url_type = "local" 
 
 class CustomHtmlFormatter(HtmlFormatter):
     '''
@@ -63,16 +67,16 @@ def get_url(output_path):
     # print(f"get_url: {original_path} -> {url}")
     return url
 
-def load_file(source_path):
-    output_path = get_output_path(source_path)
-    url = get_url(output_path)
-
-    with open(source_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    # logic for getting meta data
+def extract_meta_data(source_path, content):
+    '''
+    content: markdown content
+    '''
+        # logic for getting meta data
     meta_data = [line for line in content.split('\n') if line.__contains__("meta-")]
-    content = [line for line in content.split('\n') if line not in meta_data]
-    content = "\n".join(content)
+    removed_meta_content = [line for line in content.split('\n') if line not in meta_data]
+    # print("In extract_meta_data: removed_meta_content")
+    # print(removed_meta_content)
+    removed_meta_content = "\n".join(removed_meta_content)
     data = {}
 
     for mdata in meta_data:
@@ -84,8 +88,26 @@ def load_file(source_path):
             value = value.split(', ')
         data[key] = value
 
+    mtime = os.path.getmtime(source_path)
+    data["date"] = str(datetime.fromtimestamp(mtime))
+    data['url'] = get_url(get_output_path(str(source_path)))
+
+    words = count_md_words(source_path)
+    etr = estimate_read_time(words, 200)
+    data['words'] = words
+    data['estimate_read_time'] = etr
+
+
+    return data, removed_meta_content
+
+
+def convert_md_to_html(content):
+    '''
+    content: markdown content
+    '''
+   
     # markdowm fragment conversion
-    body_content = markdown.markdown(content, extensions=["md4mathjax", "extra", "smarty", CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter)])
+    body_content = markdown.markdown(content, extensions=["toc","md4mathjax", "extra", "smarty", CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter)])
     # md4mathjax extension is causing some issue its adding &lsquo for ' and that is giving error in rendering so i am replacing them manually
     body_content = body_content.replace('&lsquo;', "'").replace('&rsquo;', "'")
     body_content = body_content.replace('&ldquo;', "\"").replace('&rdquo;', "\"")
@@ -97,16 +119,123 @@ def load_file(source_path):
         '<li>[ ]', '<li><input type="checkbox" disabled>'
     )
 
-    page = Page(source_path,output_path,url,data,content,body_content)
+    return body_content
+
+
+def load_page(source_path):
+    output_path = get_output_path(source_path)
+    url = get_url(output_path)
+
+    with open(source_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    data, removed_meta_content = extract_meta_data(source_path, content)
+    # print("In load_pages: meta_data\n", data)
+    # print("### In load_pages: removed_meta_content ###")
+    # print(removed_meta_content)
+    body_content = convert_md_to_html(removed_meta_content)
+
+    page = Page(source_path,output_path,url,data,removed_meta_content,body_content)
 
     # print(page)
     return page
 
-def load_files(directory_path):
+def generate_links_in_index(index_path, files, url_type):
+    with open(str(index_path), 'r') as f:
+        index_content = f.read()
+    # print(content)
+    posts_snippets_links = [file_path for file_path in files if str(file_path) != 'content/index.md']
+    posts_snippets_data = []
+    for posts_snippets_link in posts_snippets_links:
+        with open(str(posts_snippets_link), 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        data, _ = extract_meta_data(posts_snippets_link, content)
+        # print(f"Meta data of post: {posts_snippets_link}: {data}")
+    # pattern = re.compile(r'<%\s*(\w+)\s*%>\s*([\s\S]*?)\s*<%\s*END\s*\1\s*%>',re.MULTILINE)
+        # WRITE in MD FORMAT
+        # if url_type == 'deployed': 
+            # post_html=f"### [{data['title']}]({data['url']} \"{data['title']}\")  \n*{data['date']}*  \n{data['desc']}\n"
+        # else:
+            # post_html=f"### [{data['title']}]({data['url']}/index.html \"{data['title']}\")  \n*{data['date']}*  \n{data['desc']}\n---\n"
+        # print(post_html)
+
+        # WRITE in HTML FORMAT
+        if url_type == 'deployed':
+            post_html = f"""
+        <article class="post-card">
+          <h3 class="post-title">
+            <a href="{data['url']}">{data['title']}</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified({data['author']}):</span>
+            <time class="post-date">{data['date']}</time> <br>
+            <span>{data['estimate_read_time']} mins read</span>
+          </div>
+
+          <p class="post-desc">
+            {data['desc']}
+          </p>
+        </article>
+        """.strip()
+
+        else:
+            post_html = f"""
+        <article class="post-card">
+          <h3 class="post-title">
+            <a href="{data['url']}/index.html">{data['title']}</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified({data['author']}):</span>
+            <time class="post-date">{data['date']}</time><br>
+            <span>{data['estimate_read_time']} mins read</span>
+          </div>
+
+          <p class="post-desc">
+            {data['desc']}
+          </p>
+        </article>
+        """.strip()
+        posts_snippets_data.append(post_html)
+    # extract contents
+    # blocks = pattern.findall(content)
+    # extracted = [content for _, content in blocks]
+    # print("EXTRACTED")
+    # print(extracted)
+
+    temp = index_content.split('\n')
+    if '<!-- posts -->' in temp and '<!-- end posts -->' in temp:
+        # print("Post snippet found")
+        start_idx = temp.index('<!-- posts -->') + 1
+        end_idx = temp.index('<!-- end posts -->')
+
+        if start_idx != end_idx:
+            del temp[start_idx:end_idx]
+        temp.insert(start_idx, '\n'.join(posts_snippets_data)) # html snippet with post lisks
+
+    final_index_content = '\n'.join(temp)
+
+    # print("Final index.md")
+    # print(final_index_content)
+    with open(str(index_path), 'w') as f:
+        f.write(final_index_content)
+
+
+def load_pages(directory_path):
     files = list_files(directory_path)
     pages = []
     for file_path in files:
-        page = load_file(str(file_path))
+
+        if str(file_path) == 'content/index.md':
+            print("Found Home page index.html! Generating links")
+            # generated post links and add to index.md before rendering step
+            generate_links_in_index(file_path, files, url_type="local")
+
+        
+
+        page = load_page(str(file_path))
         pages.append(page)
     return pages
 
@@ -125,21 +254,76 @@ def copy_static_files(static_folders_list, dest_folder):
                 shutil.copy2(source,destination)
             # print(f'Copied {source} -> {destination}')
 
+def count_md_words(path: str) -> int:
+    text = Path(path).read_text(encoding="utf-8")
+
+    # 1. Remove meta / front-matter (everything before first ---)
+    text = re.sub(r"\A.*?\n---\n", "", text, flags=re.S)
+
+    # 2. Remove fenced code blocks ``` ```
+    text = re.sub(r"```.*?```", "", text, flags=re.S)
+
+    # 3. Remove inline code `code`
+    text = re.sub(r"`[^`]*`", "", text)
+
+    # 4. Remove images ![alt](url)
+    text = re.sub(r"!\[[^\]]*\]\([^)]+\)", "", text)
+
+    # 5. Replace links [text](url) → text
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+
+    # 6. Remove task list checkboxes "- [ ]" or "- [x]"
+    text = re.sub(r"-\s*\[[ xX]\]\s*", "", text)
+
+    # 7. Remove markdown symbols
+    text = re.sub(r"[#>*_~\-]+", " ", text)
+
+    # 8. Collapse whitespace
+    text = re.sub(r"\s+", " ", text)
+
+    # 9. Count words
+    words = re.findall(r"\b[A-Za-z0-9']+\b", text)
+    return len(words)
+
+def estimate_read_time(word_count: int, reading_speed_wpm: int) -> int:
+    return max(1, math.ceil(word_count / reading_speed_wpm))
+
 if __name__ == '__main__':
     # Specify the directory you want to list files for
     directory_path = './content'
-    # files = list_files(directory_path)
-    # print(files)
+    files = list_files(directory_path)
+    # for file in files:
+        # print(file)
+        # if str(file) == 'content/index.md':
+            # print(1)
 
+    # load_pages(directory_path)
+    # print("meta of index.md")
+    # with open('content/index.md', 'r', encoding='utf-8') as f:
+        # content = f.read()
+
+    # print(extract_meta_data(content))
     # for file in files:
         # out = get_output_path(str(file))
         # get_url(out)
 
-    # load_file(str(files[0]))
-    pages = load_files(directory_path)
-    print(pages[0].meta['title'])
-    print(pages[1].meta['title'])
-    print(pages[2].meta['title'])
+    load_page(str(files[0]))
 
-    copy_static_files(['./static/','./theme/static/'],'./output')
+    words = count_md_words("./content/about.md")
+    print(f"For {words} words")
+    print(estimate_read_time(words, 200), end = " ")
+    print("min read")
+    # pages = load_pages(directory_path)
+    # print(pages[0].meta['title'])
+    # print(pages[1].meta['title'])
+    # print(pages[2].meta['title'])
+
+
+   #  print(pages[1].source_path)
+   # 
+   #  print(pages[0].url)
+   #  print(pages[1].url)
+   #  print(pages[2].url)
+
+    # copy_static_files(['./static/','./theme/static/'],'./output')
 

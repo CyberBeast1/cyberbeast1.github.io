@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dump</title>
+    <link rel="icon" type="image/png" href="{{ base_url }}/images/favicon.ico"/>
     <link rel="stylesheet" href="{{ base_url }}/styles.css">
     <link rel="stylesheet" href="{{ base_url }}/pygment.css">
     <!-- <link rel="stylesheet" href="https://raw.githubusercontent.com/numist/highlight-css/refs/heads/main/Other/tomorrow_night_eighties.css"> -->
@@ -10,22 +11,24 @@
 <body>
 
   <ul class="nav">
-    <li><a href="{{ base_url }}/index.html">Home</a></li>
+    <li><a href="{{ base_url }}/index.html"><img class="icon" src="{{ base_url }}/images/siteIcon.png" alt=""></a></li>
     <li><a href="{{ base_url }}/about/index.html">About</a></li>
   </ul> 
 
   <header>
+    {% if page.meta.estimate_read_time %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+    <span>{{ page.meta.estimate_read_time }} minutes</span>
+    {% endif %}
+
     {% if page.meta.title %}
     <h1>{{ page.meta.title }}</h1>
     {% endif %}
-    <p>
-    {% if page.meta.author %}
-    <strong>Author: {{ page.meta.author }}</strong><br>
-    {% endif %}
 
-    {% if page.meta.date %}
-    <strong>Date: {{ page.meta.date }}</strong><br>
-    {% endif %}
+    <p>
+    <!-- {% if page.meta.author %} -->
+    <!-- <strong>Author: {{ page.meta.author }}</strong><br> -->
+    <!-- {% endif %} -->
 
     {% if page.meta.tags %}
       <strong>Tags: </strong>
@@ -40,7 +43,15 @@
 
   <footer>
         <hr>
-        <p>&copy; Made with ♥  by cyber</p>
+        {% if page.meta.words %}
+        <strong>{{ page.meta.words }} Words</strong><br>
+        {% endif %}
+
+        {% if page.meta.date %}
+        <strong>Last Modified: {{ page.meta.date }}</strong><br>
+        {% endif %}
+        <!-- <p class="center">Made with ♥  by cyber</p> -->
+        <p class="center" >crafted by me on evenings and weekends.</p>
     </footer>
 
 </body>

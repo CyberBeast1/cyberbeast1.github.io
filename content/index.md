@@ -1,186 +1,78 @@
 meta-title:Title Is Home 
-meta-desc:This is desctiption
+meta-desc:This is HomePage desctiption
 meta-author:Cyber
-meta-date:2026-01-26
 meta-tags:markdown, demo, test, parser
 meta-random:
-# Heading Level 1
 
-## Heading Level 2
-
-### Heading Level 3
-
-#### Heading Level 4
-
-##### Heading Level 5
-
-###### Heading Level 6
-
-About link: [OpenAI](/about)
-
----
-
-## Paragraphs & Line Breaks
-
-This is a normal paragraph. Markdown collapses  
-multiple spaces and respects  
-manual line breaks using two spaces at the end of a line.
-
-This is a new paragraph.
-
----
-
-## Emphasis
-
-*Italic text*  
-_Italic text (underscore)_  
-
-**Bold text**  
-__Bold text (underscore)__  
-
-***Bold + Italic***  
-___Bold + Italic___  
-
-~~Strikethrough~~
-
----
-
-## Blockquotes
-
-> This is a blockquote.
->
-> > Nested blockquote.
-> >
-> > > Deeply nested blockquote.
-
----
-
-## Lists
-
-### Unordered List
-
-- Item A
-- Item B
-  - Subitem B1
-  - Subitem B2
-    - Sub-subitem
-- Item C
-
-### Ordered List
-
-1. First item
-2. Second item
-   1. Nested ordered item
-   2. Another nested item
-3. Third item
-
-### Task List (GFM)
-
-- [x] Completed task
-- [ ] Incomplete task
-- [ ] Another task
-
----
-
-## Code
-
-### Inline Code
-
-Use `printf()` in C or `console.log()` in JavaScript.
-
-### Fenced Code Blocks
-
-```c
-#include <stdio.h>
-
-int main() {
-    printf("Hello, Markdown!\n");
-    return 0;
-}
-```
-
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-```
-
-```zsh
-gcc main.c -O2 -Wall -o app
-./app
-```
-
----
-
-## Horizontal Rules
-
----
-***
-___
-
----
-
-## Links
-
-- Inline link: [OpenAI](https://openai.com)
-- Reference-style link: [GitHub][github-link]
-
-[github-link]: https://github.com
-
----
-
-## Images
-
-![Alt text](/images/coder.jpg "Image Title")
-Posts: [First Post](/blog/first-post/index.html "Post Title")
-
-<!-- ![Alt text](https://via.placeholder.com/300x150 "Image Title") -->
-
----
-
-## Tables (GFM)
-
-| Language | Type       | Speed |
-|----------|------------|-------|
-| C        | Compiled   | Fast  |
-| Python  | Interpreted| Medium|
-| Java    | JVM        | Fast  |
-
----
-
-## Footnotes
-
-This sentence has a footnote.[^1]
-
-[^1]: This is a simple footnote.
-
----
-
-## HTML Inside Markdown
-
-<div style="border:1px solid #888; padding:10px; border-radius:6px;">
-<strong>HTML block</strong> inside Markdown.
-</div>
-
----
-
-## Emoji
-
-🔥 🚀 🧠 💻 📦
-
----
-
-## Math
-
-Inline math: $E = mc^2$
-
-$$
-\int_0^\infty e^{-x} dx = 1
-$$
-
----
-
+This is a home page of my static site generator  
+in this you just have to write normal text in `content/` folder  
+and run `python build.py` and it will build  
+everything and give final files in `output/` directory
+
+## Posts
+<!-- posts -->
+<article class="post-card">
+          <h3 class="post-title">
+            <a href="/about/index.html">Title Is About</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified(Cyber):</span>
+            <time class="post-date">2026-01-27 23:43:27.701064</time><br>
+            <span>1 mins read</span>
+          </div>
+
+          <p class="post-desc">
+            Little bit about me and this project
+          </p>
+        </article>
+<article class="post-card">
+          <h3 class="post-title">
+            <a href="/blog/second_post/index.html">Title Is Second Post</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified(Cyber):</span>
+            <time class="post-date">2026-01-27 22:03:16.781676</time><br>
+            <span>2 mins read</span>
+          </div>
+
+          <p class="post-desc">
+            Testing various markdown sytax
+          </p>
+        </article>
+<article class="post-card">
+          <h3 class="post-title">
+            <a href="/blog/first-post/index.html">Title Is First Post</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified(Cyber):</span>
+            <time class="post-date">2026-01-27 23:53:55.287385</time><br>
+            <span>1 mins read</span>
+          </div>
+
+          <p class="post-desc">
+            This is 1st post desctiption
+          </p>
+        </article>
+<article class="post-card">
+          <h3 class="post-title">
+            <a href="/blog/sub-blog/third-post/index.html"> Title Is Third Post</a>
+          </h3>
+
+          <div class="post-meta">
+            <span class="post-author">Last Modified( Cyber):</span>
+            <time class="post-date">2026-01-27 22:36:19.363734</time><br>
+            <span>2 mins read</span>
+          </div>
+
+          <p class="post-desc">
+             Desc of 3rd post
+          </p>
+        </article>
+<!-- end posts -->
 ## Final Thoughts
-
-Markdown is deceptively simple and wonderfully messy.
+Post links are dynamically generated based on folder content  
+including `<!-- posts -->` and `<!-- end posts -->` is *important*  
+as that is searched and content is added inside that block

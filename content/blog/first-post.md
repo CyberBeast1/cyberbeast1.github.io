@@ -1,47 +1,22 @@
 meta-title:Title Is First Post
-meta-desc:This is desctiption
+meta-desc:This is 1st post desctiption
 meta-author:Cyber
-meta-date:2026-01-26
 meta-tags:markdown, demo, test, parser, first post
 meta-random:
-# Heading Level 1
 
-## Heading Level 2
+## New Features and Implementation Ideas for this site
 
-Conditional statements and logical operators
-Introduction
+> Ideas to implement Pagination
 
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
 
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
+- create data.json(contains all page data) from python
+    - change code where generating links into index.html
+- make script.js which will add all post cards using dom 
+- it will help in both search and pagination
 
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
+- Configuration file & extensibility:  
+Almost every serious SSG supports a config file (YAML/TOML/JSON). This lets you specify things like site title, permalink patterns, date formats, RSS output, plugins, etc. Right now it’s all probably hard-coded or implicit. A config layer lets users adjust behavior without editing Python code (big UX win).
 
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
+- No plugin ecosystem:  
+By design your generator is minimal. That’s intentional. However, many SSGs support plugins — shortcodes, syntax highlighters, sitemap generators, RSS feeds, search indexing. Without those, you end up reinventing functionality each time.
 
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
-
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.
-Conditional statements and logical operators
-Introduction
-
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.Conditional statements and logical operators
-Introduction
-
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.Conditional statements and logical operators
-Introduction
-
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.Conditional statements and logical operators
-Introduction
-
-In the context of Jinja templating, conditional statements and logical operators are vital tools for creating dynamic and responsive templates. This article provides an in-depth exploration of if, elif, and else statements, as well as the logical operators and, or, and not within the framework of Jinja.

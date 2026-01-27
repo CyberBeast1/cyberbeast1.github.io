@@ -1,185 +1,25 @@
 meta-title:Title Is About
-meta-desc:This is desctiption
+meta-desc:Little bit about me and this project
 meta-author:Cyber
-meta-date:2026-01-26
-meta-tags:markdown, demo, test, parser
+meta-tags:
 meta-random:
-# Heading Level 1
 
-## Heading Level 2
+**Hi👋 coders,**
 
-### Heading Level 3
+![Alt Text](/images/hxh-killua.gif "Killua saying Hi")
 
-#### Heading Level 4
+<!-- meet <object type="image/svg+xml" data="/images/siteIcon.svg"></object> he is my new friend -->
+<!-- meet <iframe src="/images/siteIcon.svg"></iframe> he is my new friend -->
+<!-- meet <img src="/images/siteIcon.svg" alt="Icon" class='inline-img'> his name is `Tylo`, he is master of binary arts and   -->
+meet ![Tylo](/images/siteIcon.png "Tylo"){.inline-img} his name is `Tylo`, he loves robots  
+I am `cyber`
+and I love to tinker around  
+This is my static blog which was writen in pure markdown and made generator program to build md files into html  
+also coded organizer script that organizes files according to what final url should look like
 
-##### Heading Level 5
+### TODOS
+- [ ] Create Initial markdown generator: it will ask for location and initial meta data and do file setup open in editor `EASY`
+- [ ] add search based on title `MID`
+- [ ] add pagination `HARD`
 
-###### Heading Level 6
-
----
-
-About link: [OpenAI](/)
-
-## Paragraphs & Line Breaks
-
-This is a normal paragraph. Markdown collapses  
-multiple spaces and respects  
-manual line breaks using two spaces at the end of a line.
-
-This is a new paragraph.
-
----
-
-## Emphasis
-
-*Italic text*  
-_Italic text (underscore)_  
-
-**Bold text**  
-__Bold text (underscore)__  
-
-***Bold + Italic***  
-___Bold + Italic___  
-
-~~Strikethrough~~
-
----
-
-## Blockquotes
-
-> This is a blockquote.
->
-> > Nested blockquote.
-> >
-> > > Deeply nested blockquote.
-
----
-
-## Lists
-
-### Unordered List
-
-- Item A
-- Item B
-  - Subitem B1
-  - Subitem B2
-    - Sub-subitem
-- Item C
-
-### Ordered List
-
-1. First item
-2. Second item
-   1. Nested ordered item
-   2. Another nested item
-3. Third item
-
-### Task List (GFM)
-
-- [x] Completed task
-- [ ] Incomplete task
-- [ ] Another task
-
----
-
-## Code
-
-### Inline Code
-
-Use `printf()` in C or `console.log()` in JavaScript.
-
-### Fenced Code Blocks
-
-```c
-#include <stdio.h>
-
-int main() {
-    printf("Hello, Markdown!\n");
-    return 0;
-}
-```
-
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
-```
-
-```zsh
-gcc main.c -O2 -Wall -o app
-./app
-```
-
----
-
-## Horizontal Rules
-
----
-***
-___
-
----
-
-## Links
-
-- Inline link: [OpenAI](https://openai.com)
-- Reference-style link: [GitHub][github-link]
-
-[github-link]: https://github.com
-
----
-
-## Images
-
-![Alt text](/images/coder.jpg "Image Title")
-
-<!-- ![Alt text](https://via.placeholder.com/300x150 "Image Title") -->
-
----
-
-## Tables (GFM)
-
-| Language | Type       | Speed |
-|----------|------------|-------|
-| C        | Compiled   | Fast  |
-| Python  | Interpreted| Medium|
-| Java    | JVM        | Fast  |
-
----
-
-## Footnotes
-
-This sentence has a footnote.[^1]
-
-[^1]: This is a simple footnote.
-
----
-
-## HTML Inside Markdown
-
-<div style="border:1px solid #888; padding:10px; border-radius:6px;">
-<strong>HTML block</strong> inside Markdown.
-</div>
-
----
-
-## Emoji
-
-🔥 🚀 🧠 💻 📦
-
----
-
-## Math
-
-Inline math: $E = mc^2$
-
-$$
-\int_0^\infty e^{-x} dx = 1
-$$
-
----
-
-## Final Thoughts
-
-Markdown is deceptively simple and wonderfully messy.
+interesting find pressing `shift+8` does search based on cursor pos

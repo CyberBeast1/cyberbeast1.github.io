@@ -1,4 +1,4 @@
-from loader import load_files 
+from loader import load_pages 
 from jinja2 import Environment, FileSystemLoader
 import re
 
@@ -16,7 +16,7 @@ def apply_base_url(html: str, base_url: str) -> str:
 
         return f'{attr}="{base_url}{url}"'
 
-    pattern = re.compile(r'(href|src)="(/[^"]*)"')
+    pattern = re.compile(r'(href|src|data)="(/[^"]*)"')
     return pattern.sub(repl, html)
 
 def render_page(page,theme_dir, base_url):
