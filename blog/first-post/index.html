@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Dump</title>
@@ -9,21 +9,28 @@
     <!-- <link rel="stylesheet" href="https://raw.githubusercontent.com/numist/highlight-css/refs/heads/main/Other/tomorrow_night_eighties.css"> -->
 </head>
 <body>
+  <audio id="bg-music" loop preload="none">
+    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.ogg" type="audio/ogg">
+    <source src="/audio/bg.mp3" type="audio/mpeg">
+  </audio>
 
   <ul class="nav">
-    <li><a href="/"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
-    <li><a href="/about">About</a></li>
+    <!-- add /index.html if opening using file:// url -->
+    <li><a href="/index.html" title="Tylo: Hi Folk, You know theres a easter egg hidden in here. Go and see if you can find it!"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
+    <li><a href="/about/index.html">About</a></li>
+    <li><a href="#"><input type="checkbox" id="theme-toggle" hidden><label for="theme-toggle" id="theme-switch" title="Toggle Theme(Shift+T)">Day</label></a></li>
   </ul> 
 
   <header>
     
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-    <span>1 minutes</span>
-    
+    <div class="icon-text">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <span>1 minutes</span>
+    </div>
 
     
-    <h1>Title Is First Post</h1>
-    
+
 
     <p>
     <!--  -->
@@ -45,6 +52,11 @@
       
     
     </p>
+
+    
+    <h1>Title Is First Post</h1>
+    
+
   </header>
   
   
@@ -59,8 +71,9 @@
 </ul>
 </li>
 <li>make script.js which will add all post cards using dom </li>
+<li>it will help in both search and pagination</li>
 <li>
-<p>it will help in both search and pagination</p>
+<p>add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled</p>
 </li>
 <li>
 <p>Configuration file &amp; extensibility:<br />
@@ -71,22 +84,100 @@ Almost every serious SSG supports a config file (YAML/TOML/JSON). This lets you 
 By design your generator is minimal. That’s intentional. However, many SSGs support plugins — shortcodes, syntax highlighters, sitemap generators, RSS feeds, search indexing. Without those, you end up reinventing functionality each time.</p>
 </li>
 </ul>
+<p><code>pactl list short sinks</code><br />
+<code>ffmpeg -f pulse -i alsa_output.pci-0000_00_1f.3.analog-stereo.monitor output.wav</code><br />
+<code>ffmpeg -f pulse -i @DEFAULT_SINK@.monitor -c:a libopus -b:a 160k output.opus</code>  </p>
+<p>Volume normalization (post-process)<br />
+<code>ffmpeg -i output.wav -af loudnorm normalized.wav</code></p>
 </main>
 
 
   <footer>
         <hr>
         
-        <strong>163 Words</strong><br>
+        <strong>182 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-27 23:53:55.287385</strong><br>
+        <strong>Last Modified: 2026-01-28 22:44:41.863921</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
     </footer>
+  <script>
+    console.log("hi");
+    const theme_toggle = document.getElementById('theme-toggle');
+    const theme_switch = document.getElementById('theme-switch');
+    const root = document.documentElement;
 
+    function changeToggle(next){
+      if(next === 'dark'){
+        theme_toggle.checked = false;
+        theme_switch.textContent = "Day";
+      } else{
+        theme_toggle.checked = false;
+        theme_switch.textContent = "Night";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // if theme found them update theme and UI and state for checkbox
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        root.dataset.theme = savedTheme;
+        changeToggle(savedTheme);
+      }
+      // same for bg audio
+      const audio = document.getElementById('bg-music');
+      console.log(audio)
+      if (!audio) return;
+
+      if (localStorage.getItem('bg-music') === 'on') {
+        audio.volume = 0.3;
+        audio.play().catch(() => {
+          // browser blocked it until user interacts — expected
+        });
+      }
+    });
+
+
+    theme_toggle.addEventListener('change', ()=>{
+      const theme = theme_toggle.checked ? "light" : "dark";
+      root.dataset.theme = theme;
+      localStorage.setItem('theme', theme);
+      theme_switch.textContent = theme_toggle.checked ? "Night" : "Day";
+    });
+
+    document.addEventListener('keydown', (e) =>{
+      const tag = event.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || event.target.isContentEditable) return;
+
+      if (event.shiftKey && event.key.toLowerCase() === 'm') {
+        const audio = document.getElementById('bg-music');
+        if (!audio) return;
+
+        if (audio.paused) {
+          audio.muted=false;
+          audio.volume = 0.3; // sane default
+          audio.play();
+          localStorage.setItem('bg-music', 'on');
+        } else {
+          audio.pause();
+          localStorage.setItem('bg-music', 'off');
+        }
+      }
+
+      if(e.shiftKey && e.key.toLowerCase() === 't'){
+        e.preventDefault();
+        console.log('Shift + T pressed');
+        current_theme = root.dataset.theme;
+        next = current_theme === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        changeToggle(next);
+      }
+    })
+  </script>
 </body>
 </html>
 
