@@ -1,4 +1,3 @@
-from loader import load_pages 
 from jinja2 import Environment, FileSystemLoader
 import re
 

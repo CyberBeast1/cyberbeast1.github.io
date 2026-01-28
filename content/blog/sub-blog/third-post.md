@@ -15,7 +15,7 @@ meta-author: Cyber
 
 This is the 3rd post content.
 
-**Hi 👋 coders,**
+### **Hi 👋 coders,**
 
 If you’re reading this, you probably enjoy building things just for the sake of building them. This post is a small checkpoint—a pause to acknowledge progress and momentum.
 
@@ -44,7 +44,7 @@ That feeling compounds over time. Small wins stack. Systems emerge. Confidence g
 
 ## A Small Celebration
 
-![Alt Text](/images/done.gif "Done")
+![Alt Text](/images/done.gif "Done"){.inline-img .rounded width=200}
 
 Sometimes the only reward you need is a tiny animated confirmation that says: **done**.
 

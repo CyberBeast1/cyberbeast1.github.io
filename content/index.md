@@ -1,8 +1,6 @@
 meta-title:Title Is Home 
 meta-desc:This is HomePage desctiption
 meta-author:Cyber
-meta-tags:markdown, demo, test, parser
-meta-random:
 
 This is a home page of my static site generator  
 in this you just have to write normal text in `content/` folder  
@@ -10,15 +8,17 @@ and run `python build.py` and it will build
 everything and give final files in `output/` directory
 
 ## Posts
+---
 <!-- posts -->
+<div class="posts-container">
 <article class="post-card">
           <h3 class="post-title">
-            <a href="/about/index.html">Title Is About</a>
+            <a href="/about">Title Is About</a>
           </h3>
 
           <div class="post-meta">
             <span class="post-author">Last Modified(Cyber):</span>
-            <time class="post-date">2026-01-27 23:43:27.701064</time><br>
+            <time class="post-date">2026-01-28 22:01:35.412504</time> <br>
             <span>1 mins read</span>
           </div>
 
@@ -28,12 +28,12 @@ everything and give final files in `output/` directory
         </article>
 <article class="post-card">
           <h3 class="post-title">
-            <a href="/blog/second_post/index.html">Title Is Second Post</a>
+            <a href="/blog/second_post">Title Is Second Post</a>
           </h3>
 
           <div class="post-meta">
             <span class="post-author">Last Modified(Cyber):</span>
-            <time class="post-date">2026-01-27 22:03:16.781676</time><br>
+            <time class="post-date">2026-01-27 22:03:16.781676</time> <br>
             <span>2 mins read</span>
           </div>
 
@@ -43,12 +43,12 @@ everything and give final files in `output/` directory
         </article>
 <article class="post-card">
           <h3 class="post-title">
-            <a href="/blog/first-post/index.html">Title Is First Post</a>
+            <a href="/blog/first-post">Title Is First Post</a>
           </h3>
 
           <div class="post-meta">
             <span class="post-author">Last Modified(Cyber):</span>
-            <time class="post-date">2026-01-27 23:53:55.287385</time><br>
+            <time class="post-date">2026-01-28 22:44:41.863921</time> <br>
             <span>1 mins read</span>
           </div>
 
@@ -58,12 +58,12 @@ everything and give final files in `output/` directory
         </article>
 <article class="post-card">
           <h3 class="post-title">
-            <a href="/blog/sub-blog/third-post/index.html"> Title Is Third Post</a>
+            <a href="/blog/sub-blog/third-post"> Title Is Third Post</a>
           </h3>
 
           <div class="post-meta">
             <span class="post-author">Last Modified( Cyber):</span>
-            <time class="post-date">2026-01-27 22:36:19.363734</time><br>
+            <time class="post-date">2026-01-28 18:06:25.735132</time> <br>
             <span>2 mins read</span>
           </div>
 
@@ -71,7 +71,10 @@ everything and give final files in `output/` directory
              Desc of 3rd post
           </p>
         </article>
+</div>
 <!-- end posts -->
+
+
 ## Final Thoughts
 Post links are dynamically generated based on folder content  
 including `<!-- posts -->` and `<!-- end posts -->` is *important*  

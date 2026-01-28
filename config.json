@@ -1,0 +1,8 @@
+{
+ "DIR_PATH" : "./content" ,
+ "THEME_DIR" : "./theme",
+ "STATIC_DIRS_PATH" : ["./content/static", "./theme/static/"],
+ "OUTPUT_DIR" : "./output/",
+ "BASE_URL" : "",
+ "URL_TYPE": "deploy"
+}

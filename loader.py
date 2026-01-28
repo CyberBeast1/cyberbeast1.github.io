@@ -8,9 +8,11 @@ from pygments.formatters import HtmlFormatter, html
 from markdown.extensions.codehilite import CodeHiliteExtension
 import re
 import math
+import json
 
-# local to include index.html in end or url and deployed for not(for production)
-url_type = "local" 
+# local to include index.html in end or url and deploy for not(for production)
+config = json.load(open('./config.json'))
+url_type = config["URL_TYPE"]
 
 class CustomHtmlFormatter(HtmlFormatter):
     '''
@@ -46,7 +48,7 @@ def get_output_path(file_path):
     # ./content/blog/first-post.md -> ./output/blog/first-post.html
     output_path = file_path.replace('content', 'output').split('/')
     # print("output_path: ", '/'.join(output_path))
-    if '/'.join(output_path) == 'output/index.md':
+    if '/'.join(output_path) in ('output/index.md', 'output/404.md'):
         output_path[-1] = output_path[-1].replace('md','html')
     else:
         file_name = output_path.pop(-1)
@@ -144,7 +146,7 @@ def generate_links_in_index(index_path, files, url_type):
     with open(str(index_path), 'r') as f:
         index_content = f.read()
     # print(content)
-    posts_snippets_links = [file_path for file_path in files if str(file_path) != 'content/index.md']
+    posts_snippets_links = [file_path for file_path in files if str(file_path) not in ('content/index.md', 'content/404.md')]
     posts_snippets_data = []
     for posts_snippets_link in posts_snippets_links:
         with open(str(posts_snippets_link), 'r', encoding='utf-8') as f:
@@ -161,7 +163,9 @@ def generate_links_in_index(index_path, files, url_type):
         # print(post_html)
 
         # WRITE in HTML FORMAT
-        if url_type == 'deployed':
+        print(f'url_type: {url_type}')
+        if url_type == 'deploy':
+            print("### deployed pattern")
             post_html = f"""
         <article class="post-card">
           <h3 class="post-title">
@@ -210,9 +214,11 @@ def generate_links_in_index(index_path, files, url_type):
         # print("Post snippet found")
         start_idx = temp.index('<!-- posts -->') + 1
         end_idx = temp.index('<!-- end posts -->')
-
+        print(f"start_idx: {start_idx} | end_idx: {end_idx}")
         if start_idx != end_idx:
             del temp[start_idx:end_idx]
+        posts_snippets_data.insert(0,'<div class="posts-container">')
+        posts_snippets_data.append('</div>')
         temp.insert(start_idx, '\n'.join(posts_snippets_data)) # html snippet with post lisks
 
     final_index_content = '\n'.join(temp)
@@ -231,7 +237,7 @@ def load_pages(directory_path):
         if str(file_path) == 'content/index.md':
             print("Found Home page index.html! Generating links")
             # generated post links and add to index.md before rendering step
-            generate_links_in_index(file_path, files, url_type="local")
+            generate_links_in_index(file_path, files, url_type)
 
         
 
