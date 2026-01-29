@@ -1,9 +1,12 @@
+#!/home/cyber_monarch/Documents/Code/Python/.venv/bin/python
 from loader import load_pages, copy_static_files
 from renderer import render_page, save_page 
 import os
 import json
 
 config = json.load(open('./config.json'))
+os.makedirs(config['OUTPUT_DIR'], exist_ok=True)
+
 pages = load_pages(config['DIR_PATH'])
 
 for page in pages:
@@ -20,4 +23,4 @@ for page in pages:
 copy_static_files(config['STATIC_DIRS_PATH'], config['OUTPUT_DIR'])
 print(f"Copied STATIC FILES {config['STATIC_DIRS_PATH']} -> {config['OUTPUT_DIR']}")
 print("🥳 Successfully compiled your blog 📃")
-print("Output Saved in ", config['OUTPUT_DIR'] + "\n## run: xdg-open ./output/index.html")
+print("Output Saved in ", config['OUTPUT_DIR'] + "\n## run: xdg-open ./output/index.html OR\ncd output && python -m http.server 8000")

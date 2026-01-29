@@ -4,7 +4,7 @@ from pathlib import Path
 from page import Page
 import shutil
 import markdown
-from pygments.formatters import HtmlFormatter, html
+from pygments.formatters import HtmlFormatter
 from markdown.extensions.codehilite import CodeHiliteExtension
 import re
 import math
@@ -19,10 +19,7 @@ class CustomHtmlFormatter(HtmlFormatter):
     This class is to add language name class to code tag
     '''
     def __init__(self, lang_str='', **options):
-        # options['style'] = 'monokai' # only useful when internal pygment cdn link is wokring but its not so my setup manually makes pygment.css using pygmentize -S dracula -f html -a .codehilite > pygment.css and uses that
         super().__init__(**options)
-        # lang_str has the value {lang_prefix}{lang}
-        # specified by the CodeHilite's options
         self.lang_str = lang_str
 
     def _wrap_code(self, source):
@@ -33,21 +30,15 @@ class CustomHtmlFormatter(HtmlFormatter):
 
 def list_files(directory):
     found_files = []
-    for root, dirs, files in os.walk(directory):
+    for root, _, files in os.walk(directory):
         for file in files:
             file_path = Path(os.path.join(root, file))
-            # print(file_path)
-            # print(file_path.suffix.lower() == '.md')
             if file_path.suffix.lower() == '.md':
                 found_files.append(file_path)
     return found_files
 
 def get_output_path(file_path):
-    # ./content/index.md -> ./output/index.html
-    # ./content/about.md -> ./output/about/index.html
-    # ./content/blog/first-post.md -> ./output/blog/first-post.html
     output_path = file_path.replace('content', 'output').split('/')
-    # print("output_path: ", '/'.join(output_path))
     if '/'.join(output_path) in ('output/index.md', 'output/404.md'):
         output_path[-1] = output_path[-1].replace('md','html')
     else:
@@ -55,29 +46,22 @@ def get_output_path(file_path):
         output_path.append(file_name.split('.')[0])
         output_path.append('index.html')
     output_path = '/'.join(output_path)
-    # print(f"OUTPUT_PATH: {file_path} -> {output_path}")
     return str(output_path)
 
 def get_url(output_path):
-    original_path = output_path
     output_path = output_path.split('/')
     output_path.remove("output")
-
     output_path.pop(-1) # remove index.html
     url = '/' + '/'.join(output_path)
 
-    # print(f"get_url: {original_path} -> {url}")
     return url
 
 def extract_meta_data(source_path, content):
     '''
     content: markdown content
     '''
-        # logic for getting meta data
     meta_data = [line for line in content.split('\n') if line.__contains__("meta-")]
     removed_meta_content = [line for line in content.split('\n') if line not in meta_data]
-    # print("In extract_meta_data: removed_meta_content")
-    # print(removed_meta_content)
     removed_meta_content = "\n".join(removed_meta_content)
     data = {}
 
@@ -99,7 +83,6 @@ def extract_meta_data(source_path, content):
     data['words'] = words
     data['estimate_read_time'] = etr
 
-
     return data, removed_meta_content
 
 
@@ -107,14 +90,11 @@ def convert_md_to_html(content):
     '''
     content: markdown content
     '''
-   
-    # markdowm fragment conversion
     body_content = markdown.markdown(content, extensions=["toc","md4mathjax", "extra", "smarty", CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter)])
-    # md4mathjax extension is causing some issue its adding &lsquo for ' and that is giving error in rendering so i am replacing them manually
     body_content = body_content.replace('&lsquo;', "'").replace('&rsquo;', "'")
     body_content = body_content.replace('&ldquo;', "\"").replace('&rdquo;', "\"")
 
-    # Example of modifying the generated HTML to replace task list syntax
+    # generating HTML to replace task list syntax
     body_content = body_content.replace(
         '<li>[x]', '<li><input type="checkbox" checked disabled>'
     ).replace(
@@ -142,91 +122,24 @@ def load_page(source_path):
     # print(page)
     return page
 
-def generate_links_in_index(index_path, files, url_type):
-    with open(str(index_path), 'r') as f:
-        index_content = f.read()
-    # print(content)
-    posts_snippets_links = [file_path for file_path in files if str(file_path) not in ('content/index.md', 'content/404.md')]
-    posts_snippets_data = []
+def generate_pages_json_file(files):
+    json_data = []
+
+    posts_snippets_links = [file_path for file_path in files if str(file_path) not in ('content/index.md' ,'content/about.md', 'content/404.md')]
     for posts_snippets_link in posts_snippets_links:
         with open(str(posts_snippets_link), 'r', encoding='utf-8') as f:
             content = f.read()
 
         data, _ = extract_meta_data(posts_snippets_link, content)
-        # print(f"Meta data of post: {posts_snippets_link}: {data}")
-    # pattern = re.compile(r'<%\s*(\w+)\s*%>\s*([\s\S]*?)\s*<%\s*END\s*\1\s*%>',re.MULTILINE)
-        # WRITE in MD FORMAT
-        # if url_type == 'deployed': 
-            # post_html=f"### [{data['title']}]({data['url']} \"{data['title']}\")  \n*{data['date']}*  \n{data['desc']}\n"
-        # else:
-            # post_html=f"### [{data['title']}]({data['url']}/index.html \"{data['title']}\")  \n*{data['date']}*  \n{data['desc']}\n---\n"
-        # print(post_html)
+        # ----- here i am constructing json data to page.json
+        json_data.append(data)
+        # -----
 
-        # WRITE in HTML FORMAT
-        print(f'url_type: {url_type}')
-        if url_type == 'deploy':
-            print("### deployed pattern")
-            post_html = f"""
-        <article class="post-card">
-          <h3 class="post-title">
-            <a href="{data['url']}">{data['title']}</a>
-          </h3>
+    # ----- here i am writeing json data to page.json
+    json_file = open('./output/pages.json', 'w')
+    json.dump(json_data, json_file, sort_keys=True, indent=4) 
+    # -----
 
-          <div class="post-meta">
-            <span class="post-author">Last Modified({data['author']}):</span>
-            <time class="post-date">{data['date']}</time> <br>
-            <span>{data['estimate_read_time']} mins read</span>
-          </div>
-
-          <p class="post-desc">
-            {data['desc']}
-          </p>
-        </article>
-        """.strip()
-
-        else:
-            post_html = f"""
-        <article class="post-card">
-          <h3 class="post-title">
-            <a href="{data['url']}/index.html">{data['title']}</a>
-          </h3>
-
-          <div class="post-meta">
-            <span class="post-author">Last Modified({data['author']}):</span>
-            <time class="post-date">{data['date']}</time><br>
-            <span>{data['estimate_read_time']} mins read</span>
-          </div>
-
-          <p class="post-desc">
-            {data['desc']}
-          </p>
-        </article>
-        """.strip()
-        posts_snippets_data.append(post_html)
-    # extract contents
-    # blocks = pattern.findall(content)
-    # extracted = [content for _, content in blocks]
-    # print("EXTRACTED")
-    # print(extracted)
-
-    temp = index_content.split('\n')
-    if '<!-- posts -->' in temp and '<!-- end posts -->' in temp:
-        # print("Post snippet found")
-        start_idx = temp.index('<!-- posts -->') + 1
-        end_idx = temp.index('<!-- end posts -->')
-        print(f"start_idx: {start_idx} | end_idx: {end_idx}")
-        if start_idx != end_idx:
-            del temp[start_idx:end_idx]
-        posts_snippets_data.insert(0,'<div class="posts-container">')
-        posts_snippets_data.append('</div>')
-        temp.insert(start_idx, '\n'.join(posts_snippets_data)) # html snippet with post lisks
-
-    final_index_content = '\n'.join(temp)
-
-    # print("Final index.md")
-    # print(final_index_content)
-    with open(str(index_path), 'w') as f:
-        f.write(final_index_content)
 
 
 def load_pages(directory_path):
@@ -237,9 +150,7 @@ def load_pages(directory_path):
         if str(file_path) == 'content/index.md':
             print("Found Home page index.html! Generating links")
             # generated post links and add to index.md before rendering step
-            generate_links_in_index(file_path, files, url_type)
-
-        
+            generate_pages_json_file(files)
 
         page = load_page(str(file_path))
         pages.append(page)

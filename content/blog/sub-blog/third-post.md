@@ -52,7 +52,7 @@ No confetti required.
 
 ---
 
-## Closing Thoughts
+ Closing Thoughts
 
 This is just the third post—but it’s proof that the pipeline works:
 Markdown → generator → HTML → web.

@@ -171,15 +171,170 @@ This sentence has a footnote.[^1]
 
 ## Math
 
+❌ What will never work with md4mathjax (now proven)
+
+You can confidently stop trying:
+
+- aligned
+- align
+- cases
+- \\ for vertical breaks
+- spacing arguments
+- delimiter changes
+
+The DOM evidence shows they are stripped before MathJax runs.
+
+Final mental model (this one sticks)
+
+Think in layers:
+
+1. Markdown decides what text survives
+2. md4mathjax wraps surviving math
+3. MathJax typesets whatever it receives
+
+In your setup:
+
+- Layer 1 destroys line breaks
+- Layer 3 never had a chance
+
+\[
+\begin{aligned}
+A &= B + C \\
+  &= D + E \\
+  &= F
+\end{aligned}
+\]
+
+retry above
+
+$$
+\begin{aligned}
+A &= B + C \\
+  &= D + E \\
+  &= F
+\end{aligned}
+$$
+
+
 Inline math: $E = mc^2$
 
 $$
 \int_0^\infty e^{-x} dx = 1
 $$
 
+visual breaks in formula
+
+
+$$
+\begin{aligned}
+A &= B + C \\
+  &= D + E \\
+  &= F
+\end{aligned}
+$$
+
+
+
+$$
+\begin{aligned}
+f(x) &= ax^2 + bx + c \\
+g(x) &= dx^2 + ex + f
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+S &= a + b + c + d \\
+  &\phantom{=} + e + f + g
+\end{aligned}
+$$
+
+---
+
+$$
+\begin{aligned}
+f(x) = a_1 x^n + a_2 x^{n-1} + a_3 x^{n-2} \\
+\quad + a_4 x^{n-3} + a_5
+\end{aligned}
+$$
+
+To haunt students in there dreams.
+
+$$
+\begin{aligned}
+\mathcal{Z}
+&=
+\int_{0}^{\infty}
+\sum_{n=1}^{\infty}
+\frac{(-1)^{n+1}}{n^{s}}
+\left(
+\det\!\left[
+\exp\!\left(
+-\tfrac{1}{2}
+(\mathbf{x}-\boldsymbol{\mu})^\top
+\Sigma^{-1}
+(\mathbf{x}-\boldsymbol{\mu})
+\right)
+\right]
+\right)^{\!1/n}
+\\
+&\qquad \times
+\prod_{k=1}^{n}
+\left(
+\frac{\partial^{k}}{\partial x^{k}}
+\left[
+\frac{1}{\Gamma(\alpha)}
+\int_{0}^{\infty}
+t^{\alpha-1} e^{-t}
+\log\!\left(
+1 + \frac{x^{2}}{t^{\beta}}
+\right)
+\, dt
+\right]
+\right)
+\\
+&\qquad \times
+\exp\!\left(
+i \oint_{\mathcal{C}}
+\frac{z^{2} + \zeta(s)}{z^{3} - 1}
+\, dz
+\right)
+\, dx
+\end{aligned}
+$$
+
+$$
+\mathcal{Z}
+=
+\int_0^\infty
+\sum_{n=1}^\infty
+\frac{(-1)^{n+1}}{n^s}
+\left(\cdots\right)^{1/n}
+$$
+
+$$
+\times
+\prod_{k=1}^n
+\left(
+\frac{\partial^k}{\partial x^k}
+\left[\cdots\right]
+\right)
+$$
+
+$$
+\times
+\exp\!\left(
+i \oint_\mathcal{C}
+\frac{z^2 + \zeta(s)}{z^3 - 1}
+\, dz
+\right)
+\, dx
+$$
+
+
 ---
 
 ## Final Thoughts
 
-Markdown is deceptively simple and wonderfully messy.
+Markdown is deceptively simple and wonderfully messy. but fun to quickly note things
 
