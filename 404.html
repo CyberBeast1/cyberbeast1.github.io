@@ -17,8 +17,8 @@
 
   <ul class="nav">
     <!-- add /index.html if opening using file:// url -->
-    <li><a href="/index.html" title="Tylo: Hi Folk, You know theres a easter egg hidden in here. Go and see if you can find it!"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
-    <li><a href="/about/index.html">About</a></li>
+    <li><a href="/" title="Tylo: Hi Folk, You know theres a easter egg hidden in here. Go and see if you can find it!"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
+    <li><a href="/about">About</a></li>
     <li><a href="#"><input type="checkbox" id="theme-toggle" hidden><label for="theme-toggle" id="theme-switch" title="Toggle Theme(Shift+T)">Day</label></a></li>
   </ul> 
 
@@ -64,80 +64,49 @@ The Page You're looking for doesn't exists</p>
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
     </footer>
+
+    <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
-    console.log("hi");
-    const theme_toggle = document.getElementById('theme-toggle');
-    const theme_switch = document.getElementById('theme-switch');
-    const root = document.documentElement;
 
-    function changeToggle(next){
-      if(next === 'dark'){
-        theme_toggle.checked = false;
-        theme_switch.textContent = "Day";
-      } else{
-        theme_toggle.checked = false;
-        theme_switch.textContent = "Night";
-      }
+    (function replacePostsComment() {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_COMMENT,
+    null,
+    false
+  );
+
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue.trim() === 'posts') {
+      const container = document.createElement('div');
+      container.className = 'posts-container';
+
+      const search = document.createElement('div');
+      search.className = 'posts-search';
+
+      const list = document.createElement('div');
+      list.className = 'posts-list';
+
+      const pagination = document.createElement('div');
+      pagination.className = 'posts-pagination';
+
+      container.append(search, list, pagination);
+
+      node.parentNode.replaceChild(container, node);
+      break; // only replace the first <!-- posts -->
     }
+  }
+})();
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // if theme found them update theme and UI and state for checkbox
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        root.dataset.theme = savedTheme;
-        changeToggle(savedTheme);
-      }
-      // same for bg audio
-      const audio = document.getElementById('bg-music');
-      console.log(audio)
-      if (!audio) return;
-
-      if (localStorage.getItem('bg-music') === 'on') {
-        audio.volume = 0.3;
-        audio.play().catch(() => {
-          // browser blocked it until user interacts — expected
-        });
-      }
-    });
-
-
-    theme_toggle.addEventListener('change', ()=>{
-      const theme = theme_toggle.checked ? "light" : "dark";
-      root.dataset.theme = theme;
-      localStorage.setItem('theme', theme);
-      theme_switch.textContent = theme_toggle.checked ? "Night" : "Day";
-    });
-
-    document.addEventListener('keydown', (e) =>{
-      const tag = event.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || event.target.isContentEditable) return;
-
-      if (event.shiftKey && event.key.toLowerCase() === 'm') {
-        const audio = document.getElementById('bg-music');
-        if (!audio) return;
-
-        if (audio.paused) {
-          audio.muted=false;
-          audio.volume = 0.3; // sane default
-          audio.play();
-          localStorage.setItem('bg-music', 'on');
-        } else {
-          audio.pause();
-          localStorage.setItem('bg-music', 'off');
-        }
-      }
-
-      if(e.shiftKey && e.key.toLowerCase() === 't'){
-        e.preventDefault();
-        console.log('Shift + T pressed');
-        current_theme = root.dataset.theme;
-        next = current_theme === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
-        localStorage.setItem('theme', next);
-        changeToggle(next);
-      }
-    })
+   window.APP_CONFIG = {
+      baseUrl: ""
+    };
   </script>
+
+  <!-- load posts dynamically -->
+  <script type="module" src="/script.js"></script>
+
 </body>
 </html>
 

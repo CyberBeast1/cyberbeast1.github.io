@@ -17,8 +17,8 @@
 
   <ul class="nav">
     <!-- add /index.html if opening using file:// url -->
-    <li><a href="/index.html" title="Tylo: Hi Folk, You know theres a easter egg hidden in here. Go and see if you can find it!"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
-    <li><a href="/about/index.html">About</a></li>
+    <li><a href="/" title="Tylo: Hi Folk, You know theres a easter egg hidden in here. Go and see if you can find it!"><img class="icon" src="/images/siteIcon.png" alt=""></a></li>
+    <li><a href="/about">About</a></li>
     <li><a href="#"><input type="checkbox" id="theme-toggle" hidden><label for="theme-toggle" id="theme-switch" title="Toggle Theme(Shift+T)">Day</label></a></li>
   </ul> 
 
@@ -26,7 +26,7 @@
     
     <div class="icon-text">
       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <span>1 minutes</span>
+      <span>3 minutes</span>
     </div>
 
     
@@ -48,7 +48,9 @@
       
       <code>parser</code>, 
       
-      <code>first post</code>
+      <code>first post</code>, 
+      
+      <code>arcane</code>
       
     
     </p>
@@ -66,15 +68,13 @@
 <p>Ideas to implement Pagination</p>
 </blockquote>
 <ul>
-<li>create data.json(contains all page data) from python<ul>
-<li>change code where generating links into index.html</li>
+<li><input type="checkbox" checked disabled> create data.json(contains all page data) from python<ul>
+<li><input type="checkbox" checked disabled> change code where generating links into index.html</li>
 </ul>
 </li>
-<li>make script.js which will add all post cards using dom </li>
-<li>it will help in both search and pagination</li>
-<li>
-<p>add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled</p>
-</li>
+<li><input type="checkbox" checked disabled> make script.js which will add all post cards using dom </li>
+<li><input type="checkbox" checked disabled> it will help in both search and pagination</li>
+<li><input type="checkbox" disabled> add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled</li>
 <li>
 <p>Configuration file &amp; extensibility:<br />
 Almost every serious SSG supports a config file (YAML/TOML/JSON). This lets you specify things like site title, permalink patterns, date formats, RSS output, plugins, etc. Right now it’s all probably hard-coded or implicit. A config layer lets users adjust behavior without editing Python code (big UX win).</p>
@@ -89,95 +89,123 @@ By design your generator is minimal. That’s intentional. However, many SSGs su
 <code>ffmpeg -f pulse -i @DEFAULT_SINK@.monitor -c:a libopus -b:a 160k output.opus</code>  </p>
 <p>Volume normalization (post-process)<br />
 <code>ffmpeg -i output.wav -af loudnorm normalized.wav</code></p>
+<p>to remove all /static from all image links exec this regex replacement </p>
+<div class="codehilite"><pre><span></span><code class="language-bash">:%s/<span class="se">\(</span>!<span class="se">\[</span><span class="o">[</span>^<span class="o">]]</span>*<span class="se">\]</span><span class="o">(</span><span class="se">\)\/</span>static/<span class="se">\1</span>/gc
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">some</span><span class="p">():</span>
+    <span class="k">pass</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">23</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<h2 id="image-optimazations-for-this-place">Image optimazations for this place</h2>
+<ol>
+<li>Pick formats like a compression engineer, not a designer</li>
+</ol>
+<p>AVIF
+Use it as your default for static images. It beats WebP and JPEG in both size and perceptual quality, especially for gradients, screenshots, and UI mockups. Encode with a perceptual quality target (CQ) instead of a fixed bitrate to avoid wasting bits on simple images.</p>
+<p>WebP (lossy + lossless)
+Keep it as a fallback for browsers that still don’t fully support AVIF (rare now, but not extinct). WebP lossless is excellent for diagrams and pixel-sharp UI.</p>
+<p>JPEG XL (JXL)
+Technically superb. Practically risky. Browser support is still fragmented. Worth experimenting with locally, not yet as a primary production format.</p>
+<p>PNG
+Only for cases where you need true lossless + wide compatibility (icons, small diagrams). Otherwise it’s a byte hog.</p>
+<p>SVG
+For diagrams, flowcharts, and icons—this is secretly your best “image format.” Tiny, scalable, styleable, scriptable. Optimize the SVG itself (remove metadata, collapse paths).</p>
+<ol>
+<li>Encode smarter, not harder</li>
+</ol>
+<p>Perceptual metrics &gt; file size
+Tune encoders using SSIM or Butteraugli targets instead of arbitrary quality numbers. A CQ of 28 in AVIF can look better than a JPEG at “90” while being half the size.</p>
+<p>Chroma subsampling awareness
+Screenshots and code snippets suffer under 4:2:0. Use 4:4:4 when text clarity matters, but only on images that actually need it.</p>
+<p>Strip everything
+Metadata, ICC profiles (unless color accuracy is critical), EXIF, thumbnails—gone. Metadata can be larger than the visible entropy of the image.</p>
+<h3 id="gif-optimizations-for-web">GIF optimizations for web</h3>
+<div class="codehilite"><pre><span></span><code class="language-scdoc">ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf &quot;scale=trunc(iw/2)*2:trunc(ih/2)*2&quot; -c:v libx264 -crf 25 -preset slow output.mp4
+</code></pre></div>
+
+<ul>
+<li>libx264 → best compression-quality tradeoff for MP4</li>
+<li>-crf 23 → visually lossless for GIF content (lower = higher quality, bigger file)</li>
+<li>yuv420p → maximum browser compatibility</li>
+<li>scale=trunc(iw/2)*2 → fixes odd dimensions (H.264 requirement)</li>
+<li>-movflags faststart → instant playback on the web</li>
+<li>baseline profile → plays everywhere, even ancient devices</li>
+</ul>
+<p>for HTML use </p>
+<div class="codehilite"><pre><span></span><code class="language-html"><span class="p">&lt;</span><span class="nt">video</span> <span class="na">autoplay</span> <span class="na">loop</span> <span class="na">muted</span> <span class="na">playsinline</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h2 id="vim">Vim</h2>
+<p>To do same edits on multiple lines</p>
+<ol>
+<li>Visual block mode<ol>
+<li><code>Ctrl+v</code></li>
+<li>Select lines</li>
+<li>Press <code>I</code> and do the edit </li>
+<li><code>Esc</code></li>
+</ol>
+</li>
+</ol>
 </main>
 
 
   <footer>
         <hr>
         
-        <strong>182 Words</strong><br>
+        <strong>526 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-28 22:44:41.863921</strong><br>
+        <strong>Last Modified: 2026-01-30 01:07:31.508109</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
     </footer>
+
+    <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
-    console.log("hi");
-    const theme_toggle = document.getElementById('theme-toggle');
-    const theme_switch = document.getElementById('theme-switch');
-    const root = document.documentElement;
 
-    function changeToggle(next){
-      if(next === 'dark'){
-        theme_toggle.checked = false;
-        theme_switch.textContent = "Day";
-      } else{
-        theme_toggle.checked = false;
-        theme_switch.textContent = "Night";
-      }
+    (function replacePostsComment() {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_COMMENT,
+    null,
+    false
+  );
+
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.nodeValue.trim() === 'posts') {
+      const container = document.createElement('div');
+      container.className = 'posts-container';
+
+      const search = document.createElement('div');
+      search.className = 'posts-search';
+
+      const list = document.createElement('div');
+      list.className = 'posts-list';
+
+      const pagination = document.createElement('div');
+      pagination.className = 'posts-pagination';
+
+      container.append(search, list, pagination);
+
+      node.parentNode.replaceChild(container, node);
+      break; // only replace the first <!-- posts -->
     }
+  }
+})();
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // if theme found them update theme and UI and state for checkbox
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        root.dataset.theme = savedTheme;
-        changeToggle(savedTheme);
-      }
-      // same for bg audio
-      const audio = document.getElementById('bg-music');
-      console.log(audio)
-      if (!audio) return;
-
-      if (localStorage.getItem('bg-music') === 'on') {
-        audio.volume = 0.3;
-        audio.play().catch(() => {
-          // browser blocked it until user interacts — expected
-        });
-      }
-    });
-
-
-    theme_toggle.addEventListener('change', ()=>{
-      const theme = theme_toggle.checked ? "light" : "dark";
-      root.dataset.theme = theme;
-      localStorage.setItem('theme', theme);
-      theme_switch.textContent = theme_toggle.checked ? "Night" : "Day";
-    });
-
-    document.addEventListener('keydown', (e) =>{
-      const tag = event.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || event.target.isContentEditable) return;
-
-      if (event.shiftKey && event.key.toLowerCase() === 'm') {
-        const audio = document.getElementById('bg-music');
-        if (!audio) return;
-
-        if (audio.paused) {
-          audio.muted=false;
-          audio.volume = 0.3; // sane default
-          audio.play();
-          localStorage.setItem('bg-music', 'on');
-        } else {
-          audio.pause();
-          localStorage.setItem('bg-music', 'off');
-        }
-      }
-
-      if(e.shiftKey && e.key.toLowerCase() === 't'){
-        e.preventDefault();
-        console.log('Shift + T pressed');
-        current_theme = root.dataset.theme;
-        next = current_theme === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
-        localStorage.setItem('theme', next);
-        changeToggle(next);
-      }
-    })
+   window.APP_CONFIG = {
+      baseUrl: ""
+    };
   </script>
+
+  <!-- load posts dynamically -->
+  <script type="module" src="/script.js"></script>
+
 </body>
 </html>
 
