@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dump</title>
     <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/styles.css">
@@ -10,7 +11,7 @@
 </head>
 <body>
   <audio id="bg-music" loop preload="none">
-    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.opus" type="audio/ogg; codecs=opus">
     <source src="/audio/bg.ogg" type="audio/ogg">
     <source src="/audio/bg.mp3" type="audio/mpeg">
   </audio>
@@ -159,6 +160,15 @@ manual line breaks using two spaces at the end of a line.</p>
 <h2 id="images">Images</h2>
 <p><img alt="Alt text" src="/images/coder.jpg" title="Image Title" /></p>
 <p><img alt="Alt text" src="/images/eye.gif" title="Anime Waifu" /></p>
+<!-- <video autoplay loop muted playsinline> -->
+<!--   <source src="/images/eye.mp4" type="video/mp4"> -->
+<!-- </video> -->
+
+<video autoplay loop muted playsinline>
+              <source src="images/src=/images/eye.webm" type="video/webm">
+              <source src="images/src=/images/eye.mp4" type="video/mp4">
+            </video>
+
 <!-- ![Alt text](https://via.placeholder.com/300x150 "Image Title") -->
 
 <hr />
@@ -178,7 +188,7 @@ manual line breaks using two spaces at the end of a line.</p>
 <td>Fast</td>
 </tr>
 <tr>
-<td>Python</td>
+<td>python</td>
 <td>Interpreted</td>
 <td>Medium</td>
 </tr>
@@ -391,14 +401,16 @@ window.MathJax = {
 </main>
 
 
+  <button id='scrollTopBtn' aria-text='Scroll to Top'>↑</button>
+
   <footer>
         <hr>
         
-        <strong>536 Words</strong><br>
+        <strong>575 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-30 01:24:41.301461</strong><br>
+        <strong>Last Modified: 2026-01-31 23:42:16.430578</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
@@ -406,6 +418,23 @@ window.MathJax = {
 
     <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
+
+    const btn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+   });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
 
     (function replacePostsComment() {
   const walker = document.createTreeWalker(

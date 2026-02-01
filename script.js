@@ -137,6 +137,8 @@ function createPaginationControls(containerClass) {
     if (current_page > 1) {
       current_page -= 1;
       renderPosts(POSTS_LIST, current_page, PAGE_SIZE);
+      createPaginationControls('posts-pagination');
+
     }
   };
 
@@ -144,6 +146,8 @@ function createPaginationControls(containerClass) {
     if (current_page < TOTAL_PAGES) {
       current_page += 1;
       renderPosts(POSTS_LIST, current_page, PAGE_SIZE);
+      createPaginationControls('posts-pagination');
+
     }
   };
 

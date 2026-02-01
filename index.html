@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dump</title>
     <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/styles.css">
@@ -10,7 +11,7 @@
 </head>
 <body>
   <audio id="bg-music" loop preload="none">
-    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.opus" type="audio/ogg; codecs=opus">
     <source src="/audio/bg.ogg" type="audio/ogg">
     <source src="/audio/bg.mp3" type="audio/mpeg">
   </audio>
@@ -59,19 +60,28 @@ everything and give final files in <code>output/</code> directory</p>
 
 <h2 id="final-thoughts">Final Thoughts</h2>
 <p>Post links are dynamically generated based on folder content<br />
-including <code>&lt;!-- posts --&gt;</code> and <code>&lt;!-- end posts --&gt;</code> is <em>important</em><br />
-as that is searched and content is added inside that block</p>
+including <code>&lt;!-- posts --&gt;</code> <em>important</em> as that is searched and content is added inside that block</p>
+<!-- ### domains ideas -->
+<!-- - heapdump.me -->
+<!-- - decodewith.me -->
+<!-- - kernalspace.me -->
+<!-- - sudeoer.me -->
+<!-- - offbyone.me  -->
+<!-- - uninitialized.me -->
+<!-- - objdump.me -->
 </main>
 
+
+  <button id='scrollTopBtn' aria-text='Scroll to Top'>↑</button>
 
   <footer>
         <hr>
         
-        <strong>27 Words</strong><br>
+        <strong>102 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-30 14:11:36.560474</strong><br>
+        <strong>Last Modified: 2026-02-02 00:47:01.056941</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
@@ -79,6 +89,23 @@ as that is searched and content is added inside that block</p>
 
     <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
+
+    const btn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+   });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
 
     (function replacePostsComment() {
   const walker = document.createTreeWalker(

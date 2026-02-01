@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dump</title>
     <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/styles.css">
@@ -10,7 +11,7 @@
 </head>
 <body>
   <audio id="bg-music" loop preload="none">
-    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.opus" type="audio/ogg; codecs=opus">
     <source src="/audio/bg.ogg" type="audio/ogg">
     <source src="/audio/bg.mp3" type="audio/mpeg">
   </audio>
@@ -62,7 +63,7 @@
 <h3 id="hi-coders"><strong>Hi 👋 coders,</strong></h3>
 <p>If you’re reading this, you probably enjoy building things just for the sake of building them. This post is a small checkpoint—a pause to acknowledge progress and momentum.</p>
 <hr />
-<h2 id="why-this-post-exists">Why This Post Exists</h2>
+<h2 id="why-this-post-exists">Why This Post exists</h2>
 <p>This blog exists because writing clarifies thinking.</p>
 <p>Code is logic made executable, but writing is logic made visible. When you combine the two, something interesting happens: ideas stop floating and start landing.</p>
 <p>This post isn’t about shipping a product or announcing a breakthrough. It’s about recognizing that <em>finishing something</em>, even something small, matters.</p>
@@ -87,14 +88,16 @@ Markdown → generator → HTML → web.</p>
 </main>
 
 
+  <button id='scrollTopBtn' aria-text='Scroll to Top'>↑</button>
+
   <footer>
         <hr>
         
-        <strong>226 Words</strong><br>
+        <strong>244 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-30 01:54:08.135756</strong><br>
+        <strong>Last Modified: 2026-01-31 17:10:14.572331</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
@@ -102,6 +105,23 @@ Markdown → generator → HTML → web.</p>
 
     <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
+
+    const btn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+   });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
 
     (function replacePostsComment() {
   const walker = document.createTreeWalker(

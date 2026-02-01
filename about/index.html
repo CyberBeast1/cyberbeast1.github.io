@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dump</title>
     <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/styles.css">
@@ -10,7 +11,7 @@
 </head>
 <body>
   <audio id="bg-music" loop preload="none">
-    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.opus" type="audio/ogg; codecs=opus">
     <source src="/audio/bg.ogg" type="audio/ogg">
     <source src="/audio/bg.mp3" type="audio/mpeg">
   </audio>
@@ -61,21 +62,23 @@ also coded organizer script that organizes files according to what final url sho
 <h3 id="todos">TODOS</h3>
 <ul>
 <li><input type="checkbox" disabled> Create Initial markdown generator: it will ask for location and initial meta data and do file setup open in editor <code>EASY</code></li>
-<li><input type="checkbox" disabled> add search based on title <code>MID</code></li>
-<li><input type="checkbox" disabled> add pagination <code>HARD</code></li>
+<li><input type="checkbox" checked disabled> add search based on title <code>MID</code></li>
+<li><input type="checkbox" checked disabled> add pagination <code>HARD</code></li>
 </ul>
 <p>interesting find pressing <code>shift+8</code> in editor does search based on cursor pos</p>
 </main>
 
 
+  <button id='scrollTopBtn' aria-text='Scroll to Top'>↑</button>
+
   <footer>
         <hr>
         
-        <strong>165 Words</strong><br>
+        <strong>152 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-30 01:34:36.091311</strong><br>
+        <strong>Last Modified: 2026-01-31 01:15:32.008412</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
@@ -83,6 +86,23 @@ also coded organizer script that organizes files according to what final url sho
 
     <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
+
+    const btn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+   });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
 
     (function replacePostsComment() {
   const walker = document.createTreeWalker(

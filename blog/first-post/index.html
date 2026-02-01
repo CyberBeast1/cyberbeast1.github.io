@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dump</title>
     <link rel="icon" type="image/png" href="/images/favicon.ico"/>
     <link rel="stylesheet" href="/styles.css">
@@ -10,7 +11,7 @@
 </head>
 <body>
   <audio id="bg-music" loop preload="none">
-    <!-- <source src="/audio/bg.opus" type="audio/ogg; codecs=opus"> -->
+    <source src="/audio/bg.opus" type="audio/ogg; codecs=opus">
     <source src="/audio/bg.ogg" type="audio/ogg">
     <source src="/audio/bg.mp3" type="audio/mpeg">
   </audio>
@@ -26,7 +27,7 @@
     
     <div class="icon-text">
       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <span>3 minutes</span>
+      <span>5 minutes</span>
     </div>
 
     
@@ -75,6 +76,11 @@
 <li><input type="checkbox" checked disabled> make script.js which will add all post cards using dom </li>
 <li><input type="checkbox" checked disabled> it will help in both search and pagination</li>
 <li><input type="checkbox" disabled> add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled</li>
+<li><input type="checkbox" disabled> add <code>rendered on</code> attr to <code>pages.json</code> like what i had in mind was that i will create special <code>/personal</code><ul>
+<li>it will be special posts it contain will not be shown on homepage to public</li>
+<li>it will also have special &lt;&ndash;posts&ndash;&gt; tag and it will render all posts that <code>/personal</code> folder contains </li>
+</ul>
+</li>
 <li>
 <p>Configuration file &amp; extensibility:<br />
 Almost every serious SSG supports a config file (YAML/TOML/JSON). This lets you specify things like site title, permalink patterns, date formats, RSS output, plugins, etc. Right now it’s all probably hard-coded or implicit. A config layer lets users adjust behavior without editing Python code (big UX win).</p>
@@ -90,7 +96,13 @@ By design your generator is minimal. That’s intentional. However, many SSGs su
 <p>Volume normalization (post-process)<br />
 <code>ffmpeg -i output.wav -af loudnorm normalized.wav</code></p>
 <p>to remove all /static from all image links exec this regex replacement </p>
-<div class="codehilite"><pre><span></span><code class="language-bash">:%s/<span class="se">\(</span>!<span class="se">\[</span><span class="o">[</span>^<span class="o">]]</span>*<span class="se">\]</span><span class="o">(</span><span class="se">\)\/</span>static/<span class="se">\1</span>/gc
+<p>this is not working</p>
+<div class="codehilite"><pre><span></span><code class="language-bash">:%s/<span class="se">\(</span><span class="o">(</span><span class="se">\|</span><span class="o">[</span><span class="se">\[</span><span class="o">]</span><span class="se">\)\z</span>s<span class="se">\/\?</span>static<span class="se">\/</span>//g
+
+this<span class="w"> </span>works
+
+<span class="sb">```</span>bash
+:%s/<span class="se">\(</span>!<span class="se">\[</span><span class="o">[</span>^<span class="o">]]</span>*<span class="se">\]</span><span class="o">(</span><span class="se">\)\/</span>static/<span class="se">\1</span>/gc
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">some</span><span class="p">():</span>
@@ -137,6 +149,94 @@ Metadata, ICC profiles (unless color accuracy is critical), EXIF, thumbnails—g
 <div class="codehilite"><pre><span></span><code class="language-html"><span class="p">&lt;</span><span class="nt">video</span> <span class="na">autoplay</span> <span class="na">loop</span> <span class="na">muted</span> <span class="na">playsinline</span><span class="p">&gt;</span>
 </code></pre></div>
 
+<h1 id="ffmpeg">ffmpeg</h1>
+<p>Extract to high-quality MP3 (transparent quality)</p>
+<div class="codehilite"><pre><span></span><code class="language-text">ffmpeg -i input.mp4 -map 0:a:0 -vn -c:a libmp3lame -q:a 0 output.mp3
+</code></pre></div>
+
+<p>Extract to high-quality AAC (re-encode)</p>
+<div class="codehilite"><pre><span></span><code class="language-text">ffmpeg -i input.mp4 -map 0:a:0 -vn -c:a aac -b:a 320k output.m4a
+</code></pre></div>
+
+<p>Best quality (no re-encoding, bit-perfect)</p>
+<p>If the MP4 already contains AAC (most do), this simply copies the audio stream:</p>
+<div class="codehilite"><pre><span></span><code class="language-text">ffmpeg -i input.mp4 -map 0:a:0 -c:a copy output.aac
+</code></pre></div>
+
+<p>Check audio codec used inside mp4</p>
+<div class="codehilite"><pre><span></span><code class="language-text">ffmpeg -i input.mp4
+</code></pre></div>
+
+<p>Best practical downsizing (recommended)</p>
+<p>Re-encode to high-quality AAC:</p>
+<div class="codehilite"><pre><span></span><code class="language-scdoc">ffmpeg -i soul_melody.aac -c:a aac -b:a 192k soul_melody_192.m4a
+</code></pre></div>
+
+<p>AC is good. Opus is better.</p>
+<div class="codehilite"><pre><span></span><code class="language-scdoc">ffmpeg -i soul_melody.aac -c:a libopus -b:a 128k soul_melody.opus
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code class="language-scdoc">ffmpeg -i soul_melody.aac -c:a libopus -b:a 20k -ac 1 -application audio soul_melody_20.opus
+</code></pre></div>
+
+<p>Why this helps:</p>
+<p>-ac 1 → mono (stereo at 20 kbps is wasteful)</p>
+<p>-application audio → tells Opus this is music, not speech</p>
+<p>This is benchmark <code>soul_melody_20</code> means its encoded with <code>20k bitrate</code>  </p>
+<div class="codehilite"><pre><span></span><code class="language-scdoc">ls -lh soul_melody*.*                                              
+-rw-rw-r-- 1 cyber_monarch cyber_monarch 4.9M Jan 31 00:26 soul_melody_20.opus
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  16M Jan 31 00:25 soul_melody_64.opus
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  20M Jan 31 00:24 soul_melody_80.opus
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  24M Jan 31 00:23 soul_melody_96.opus
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  22M Jan 31 00:03 soul_melody.aac
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  56M Jan 30 23:56 soul_melody.mp4
+-rw-rw-r-- 1 cyber_monarch cyber_monarch  31M Jan 31 00:17 soul_melody.opus
+</code></pre></div>
+
+<p>and <code>soul_melody.opus</code> was encoded using <code>128k bitrate</code> as its shown it increased size instead of decreasing cause we tried to encode in bigger bitrate than actual <code>.aac</code> file which is actually <code>102 kb/s</code></p>
+<p>Size ≈ bitrate * duration</p>
+<div class="codehilite"><pre><span></span><code class="language-gdscript"><span class="n">ffmpeg</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">soul_melody</span><span class="o">.</span><span class="n">aac</span>
+
+<span class="n">ffmpeg</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mf">4.4</span><span class="o">.</span><span class="mi">2</span><span class="o">-</span><span class="mi">0</span><span class="n">ubuntu0</span><span class="o">.</span><span class="mf">22.04</span><span class="o">.</span><span class="mi">1</span><span class="w"> </span><span class="n">Copyright</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="mi">2000</span><span class="o">-</span><span class="mi">2021</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FFmpeg</span><span class="w"> </span><span class="n">developers</span>
+<span class="w">  </span><span class="n">built</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">gcc</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="p">(</span><span class="n">Ubuntu</span><span class="w"> </span><span class="mf">11.2</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">19</span><span class="n">ubuntu1</span><span class="p">)</span>
+<span class="w">  </span><span class="n">configuration</span><span class="p">:</span><span class="w"> </span><span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">usr</span><span class="w"> </span><span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="n">ubuntu0</span><span class="o">.</span><span class="mf">22.04</span><span class="o">.</span><span class="mi">1</span><span class="w"> </span><span class="o">--</span><span class="n">toolchain</span><span class="o">=</span><span class="n">hardened</span><span class="w"> </span><span class="o">--</span><span class="n">libdir</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="w"> </span><span class="o">--</span><span class="n">incdir</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="w"> </span><span class="o">--</span><span class="n">arch</span><span class="o">=</span><span class="n">amd64</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">gpl</span><span class="w"> </span><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">stripping</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">gnutls</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">ladspa</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libaom</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libass</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libbluray</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libbs2b</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libcaca</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libcdio</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libcodec2</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libdav1d</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libflite</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libfontconfig</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libfreetype</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libfribidi</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libgme</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libgsm</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libjack</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libmp3lame</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libmysofa</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libopenjpeg</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libopenmpt</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libopus</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libpulse</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">librabbitmq</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">librubberband</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libshine</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libsnappy</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libsoxr</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libspeex</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libsrt</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libssh</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libtheora</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libtwolame</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libvidstab</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libvorbis</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libvpx</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libwebp</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libx265</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libxml2</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libxvid</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libzimg</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libzmq</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libzvbi</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">lv2</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">omx</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">openal</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">opencl</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">opengl</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sdl2</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pocketsphinx</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">librsvg</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libmfx</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libdc1394</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libdrm</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libiec61883</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">chromaprint</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">frei0r</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">libx264</span><span class="w"> </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">shared</span>
+<span class="w">  </span><span class="n">libavutil</span><span class="w">      </span><span class="mf">56.</span><span class="w"> </span><span class="mf">70.100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">56.</span><span class="w"> </span><span class="mf">70.100</span>
+<span class="w">  </span><span class="n">libavcodec</span><span class="w">     </span><span class="mf">58.134</span><span class="o">.</span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">58.134</span><span class="o">.</span><span class="mi">100</span>
+<span class="w">  </span><span class="n">libavformat</span><span class="w">    </span><span class="mf">58.</span><span class="w"> </span><span class="mf">76.100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">58.</span><span class="w"> </span><span class="mf">76.100</span>
+<span class="w">  </span><span class="n">libavdevice</span><span class="w">    </span><span class="mf">58.</span><span class="w"> </span><span class="mf">13.100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">58.</span><span class="w"> </span><span class="mf">13.100</span>
+<span class="w">  </span><span class="n">libavfilter</span><span class="w">     </span><span class="mf">7.110</span><span class="o">.</span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w">  </span><span class="mf">7.110</span><span class="o">.</span><span class="mi">100</span>
+<span class="w">  </span><span class="n">libswscale</span><span class="w">      </span><span class="mf">5.</span><span class="w">  </span><span class="mf">9.100</span><span class="w"> </span><span class="o">/</span><span class="w">  </span><span class="mf">5.</span><span class="w">  </span><span class="mf">9.100</span>
+<span class="w">  </span><span class="n">libswresample</span><span class="w">   </span><span class="mf">3.</span><span class="w">  </span><span class="mf">9.100</span><span class="w"> </span><span class="o">/</span><span class="w">  </span><span class="mf">3.</span><span class="w">  </span><span class="mf">9.100</span>
+<span class="w">  </span><span class="n">libpostproc</span><span class="w">    </span><span class="mf">55.</span><span class="w">  </span><span class="mf">9.100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">55.</span><span class="w">  </span><span class="mf">9.100</span>
+<span class="p">[</span><span class="n">aac</span><span class="w"> </span><span class="err">@</span><span class="w"> </span><span class="mh">0x651f6760e900</span><span class="p">]</span><span class="w"> </span><span class="n">Estimating</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">bitrate</span><span class="p">,</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">inaccurate</span>
+<span class="n">Input</span><span class="w"> </span><span class="c1">#0, aac, from &#39;soul_melody.aac&#39;:</span>
+<span class="w">  </span><span class="n">Duration</span><span class="p">:</span><span class="w"> </span><span class="mi">00</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mf">15.40</span><span class="p">,</span><span class="w"> </span><span class="n">bitrate</span><span class="p">:</span><span class="w"> </span><span class="mi">102</span><span class="w"> </span><span class="n">kb</span><span class="o">/</span><span class="n">s</span>
+<span class="w">  </span><span class="n">Stream</span><span class="w"> </span><span class="c1">#0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 102 kb/s</span>
+<span class="n">At</span><span class="w"> </span><span class="n">least</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">specified</span>
+</code></pre></div>
+
+<p>Its pretty cool from how we came from <code>22M</code> to <code>4.9M</code><br />
+Tech is beautiful it you know the internals well.</p>
+<h3 id="now-for-image-optimizations-especially-png-and-jpeg">Now for image optimizations especially png and JPEG</h3>
+<p>web considers webp as std cause of its efficiant compression so we will be using webp for our site as well</p>
+<p><code>sharp_yuv</code> is for what i dont know will look later</p>
+<div class="codehilite"><pre><span></span><code class="language-bash">cwebp<span class="w"> </span>-q<span class="w"> </span><span class="m">70</span><span class="w"> </span>-m<span class="w"> </span><span class="m">6</span><span class="w"> </span>-sharp_yuv<span class="w"> </span>coder.jpg<span class="w"> </span>-o<span class="w"> </span>coder_q70_m6_sharp.webp
+cwebp<span class="w"> </span>-q<span class="w"> </span><span class="m">80</span><span class="w"> </span>-m6<span class="w"> </span>-af<span class="w"> </span>coder.jpg<span class="w"> </span>-o<span class="w"> </span>coder_af_m6.webp
+</code></pre></div>
+
+<p>Use lossless WebP:</p>
+<div class="codehilite"><pre><span></span><code class="language-bash">cwebp<span class="w"> </span>-lossless<span class="w"> </span>-z<span class="w"> </span><span class="m">9</span><span class="w"> </span>input.png<span class="w"> </span>-o<span class="w"> </span>output.webp
+</code></pre></div>
+
+<p>Batch version for PNGs only:</p>
+<div class="codehilite"><pre><span></span><code class="language-bash">find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-iname<span class="w"> </span><span class="s2">&quot;*.png&quot;</span><span class="w"> </span><span class="se">\</span>
+-exec<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">  for f do</span>
+<span class="s1">    cwebp -lossless -z 9 &quot;$f&quot; -o &quot;${f%.*}.webp&quot;</span>
+<span class="s1">  done</span>
+<span class="s1">&#39;</span><span class="w"> </span>sh<span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</code></pre></div>
+
 <h2 id="vim">Vim</h2>
 <p>To do same edits on multiple lines</p>
 <ol>
@@ -148,17 +248,26 @@ Metadata, ICC profiles (unless color accuracy is critical), EXIF, thumbnails—g
 </ol>
 </li>
 </ol>
+<p>To list env variables of any opened window</p>
+<div class="codehilite"><pre><span></span><code class="language-scdoc">xprop | grep WM_CLASS
+</code></pre></div>
+
+<hr />
+<h3 id="interesting-links-to-study">Interesting links to study</h3>
+<p><a href="https://quartz.jzhao.xyz/features/graph-view">Graph based blog navigation</a></p>
 </main>
 
+
+  <button id='scrollTopBtn' aria-text='Scroll to Top'>↑</button>
 
   <footer>
         <hr>
         
-        <strong>526 Words</strong><br>
+        <strong>890 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-01-30 01:07:31.508109</strong><br>
+        <strong>Last Modified: 2026-02-01 23:46:18.493729</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>
@@ -166,6 +275,23 @@ Metadata, ICC profiles (unless color accuracy is critical), EXIF, thumbnails—g
 
     <!-- inject post container div in place of <\!-- posts -\-> -->
   <script>
+
+    const btn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+   });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
 
     (function replacePostsComment() {
   const walker = document.createTreeWalker(
