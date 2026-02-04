@@ -5,6 +5,9 @@ const theme_toggle = document.getElementById('theme-toggle');
 const theme_switch = document.getElementById('theme-switch');
 const root = document.documentElement;
 
+const pwd = localStorage.getItem('pass')
+console.log(pwd);
+
 
 document.addEventListener('DOMContentLoaded', () => {
   // if theme found them update theme and UI and state for checkbox
@@ -259,9 +262,9 @@ function renderPost(data) {
   const date = formatDate(data.date);
 
   article.innerHTML = `
-    <h3 class="post-title">
+    <h4 class="post-title">
       <a href="${url}">${escapeHTML(title)}</a>
-    </h3>
+    </h4>
 
     <div class="post-meta">
       <span class="post-author">

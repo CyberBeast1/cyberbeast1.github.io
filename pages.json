@@ -1,7 +1,22 @@
 [
     {
         "author": "Cyber",
-        "date": "2026-02-02 00:57:25.148211",
+        "date": "2026-02-02 16:29:11.012104",
+        "desc": "new build system successor of make",
+        "estimate_read_time": 1,
+        "tags": [
+            "make",
+            "just",
+            "linux",
+            "build"
+        ],
+        "title": "Just Make Quickstart",
+        "url": "/linux/just-make-quickstart",
+        "words": 24
+    },
+    {
+        "author": "Cyber",
+        "date": "2026-02-02 15:25:33.764501",
         "desc": "Testing various markdown sytax",
         "estimate_read_time": 3,
         "tags": [
@@ -13,11 +28,11 @@
         ],
         "title": "Title Is Second Post",
         "url": "/blog/second_post",
-        "words": 574
+        "words": 559
     },
     {
         "author": "Cyber",
-        "date": "2026-02-01 23:46:18.493729",
+        "date": "2026-02-05 01:45:06.518374",
         "desc": "This is 1st post desctiption",
         "estimate_read_time": 5,
         "tags": [
@@ -30,11 +45,11 @@
         ],
         "title": "Title Is First Post",
         "url": "/blog/first-post",
-        "words": 890
+        "words": 908
     },
     {
         "author": " Cyber",
-        "date": "2026-02-02 00:55:00.544147",
+        "date": "2026-02-02 16:05:47.825171",
         "desc": " Desc of 3rd post",
         "estimate_read_time": 2,
         "title": " Title Is Third Post",
