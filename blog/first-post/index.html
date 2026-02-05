@@ -66,21 +66,21 @@
 <main>
     <h2 id="new-features-and-implementation-ideas-for-this-site">New Features and Implementation Ideas for this site</h2>
 <ul>
-<li>in checkbox theres <code>::marker</code> thats drawing list dot, will try to reomve it  </li>
+<li>in checkbox theres <code></code> thats drawing list dot, will try to reomve it  </li>
 <li>try to lock <code>/personal</code> pages</li>
 </ul>
 <blockquote>
 <p>Ideas to implement Pagination</p>
 </blockquote>
 <ul>
-<li><input type="checkbox" checked disabled> create data.json(contains all page data) from python<ul>
-<li><input type="checkbox" checked disabled> change code where generating links into index.html</li>
+<li><input type="checkbox" checked disabled> create data.json(contains all page data) from python  <ul>
+<li><input type="checkbox" checked disabled> change code where generating links into index.html  </li>
 </ul>
 </li>
-<li><input type="checkbox" checked disabled> make script.js which will add all post cards using dom </li>
-<li><input type="checkbox" checked disabled> it will help in both search and pagination</li>
-<li><input type="checkbox" disabled> add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled</li>
-<li><input type="checkbox" disabled> add <code>rendered on</code> attr to <code>pages.json</code> like what i had in mind was that i will create special <code>/personal</code><ul>
+<li><input type="checkbox" checked disabled> make script.js which will add all post cards using dom   </li>
+<li><input type="checkbox" checked disabled> it will help in both search and pagination  </li>
+<li><input type="checkbox" disabled> add <code>draft</code> meta data to md pages so that pages currently in progress don't get compiled  </li>
+<li><input type="checkbox" disabled> add <code>rendered on</code> attr to <code>pages.json</code> like what i had in mind was that i will create special <code>/personal</code>  <ul>
 <li>it will be special posts it contain will not be shown on homepage to public</li>
 <li>it will also have special &lt;&ndash;posts&ndash;&gt; tag and it will render all posts that <code>/personal</code> folder contains </li>
 </ul>
@@ -102,11 +102,10 @@ By design your generator is minimal. That’s intentional. However, many SSGs su
 <p>to remove all /static from all image links exec this regex replacement </p>
 <p>this is not working</p>
 <div class="codehilite"><pre><span></span><code class="language-bash">:%s/<span class="se">\(</span><span class="o">(</span><span class="se">\|</span><span class="o">[</span><span class="se">\[</span><span class="o">]</span><span class="se">\)\z</span>s<span class="se">\/\?</span>static<span class="se">\/</span>//g
+</code></pre></div>
 
-this<span class="w"> </span>works
-
-<span class="sb">```</span>bash
-:%s/<span class="se">\(</span>!<span class="se">\[</span><span class="o">[</span>^<span class="o">]]</span>*<span class="se">\]</span><span class="o">(</span><span class="se">\)\/</span>static/<span class="se">\1</span>/gc
+<p>this works</p>
+<div class="codehilite"><pre><span></span><code class="language-bash">:%s/<span class="se">\(</span>!<span class="se">\[</span><span class="o">[</span>^<span class="o">]]</span>*<span class="se">\]</span><span class="o">(</span><span class="se">\)\/</span>static/<span class="se">\1</span>/gc
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code class="language-python"><span class="k">def</span> <span class="nf">some</span><span class="p">():</span>
@@ -267,11 +266,11 @@ cwebp<span class="w"> </span>-q<span class="w"> </span><span class="m">80</span>
   <footer>
         <hr>
         
-        <strong>908 Words</strong><br>
+        <strong>838 Words</strong><br>
         
 
         
-        <strong>Last Modified: 2026-02-05 01:45:06.518374</strong><br>
+        <strong>Last Modified: 2026-02-05 23:35:32.510389</strong><br>
         
         <!-- <p class="center">Made with ♥  by cyber</p> -->
         <p class="center" >crafted by me on evenings and weekends.</p>

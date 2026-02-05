@@ -305,7 +305,7 @@ function escapeHTML(str) {
   }[m]));
 }
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 const POSTS_LIST = await loadPosts();
 let FILTERED_POSTS = POSTS_LIST;
 let TOTAL_PAGES = Math.max(

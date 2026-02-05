@@ -103,11 +103,11 @@ h6 {
   line-height: 1.5;
   color: var(--heading-color);
   margin: 0;
-  padding-bottom: 0.3em;
+  padding-bottom: 0.3rem;
 }
 
 p, li{
-  font-size: 0.9em;
+  font-size: 0.9rem;
 }
 
 img.icon {
@@ -122,21 +122,21 @@ img.icon {
 code,
 pre {
   font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.9rem;
 }
 
 code {
   background-color: var(--secondary-color);
   color: var(--code-color);
-  padding: 0.2em 0.4em;
+  padding: 0.2rem 0.4rem;
   border-radius: 3px;
-  font-size: 0.9em;
 }
 
 pre {
   position: relative;
   background-color: var(--secondary-color);
   color: #e2e8f0;
-  padding: 1.5em;
+  padding: 1.5rem;
   border-radius: 8px;
   overflow-x: auto;
   line-height: 1.5;
@@ -191,7 +191,7 @@ a:hover {
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: 1.5em 0;
+  margin: 1.5rem 0;
 }
 
 th,
@@ -217,8 +217,8 @@ tr:hover {
    ========================= */
 
 blockquote {
-  margin: 1em 0;
-  padding: 0.5em 1em;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
   border-left: 4px solid var(--link-color);
   background-color: var(--secondary-color);
   font-style: italic;
@@ -229,7 +229,7 @@ blockquote {
    ========================= */
 
 input[type="checkbox"] {
-  margin-right: 0.5em;
+  margin-right: 0.5rem;
 }
 
 /* =========================
@@ -238,13 +238,16 @@ input[type="checkbox"] {
 
 .nav {
   list-style-type: none;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1rem 0;
   padding: 0;
   background-color: var(--secondary-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .nav li {
-  font-size: 0.9em;
+  font-size: 0.9rem;
   float: left;
 }
 
@@ -263,8 +266,8 @@ input[type="checkbox"] {
   /* background-color:var(--secondary-color); */
   /* border-radius: 10px; */
   border-bottom: 1px solid var(--border-color);
-  padding:0.5em 1em;
-  margin: 0 1em;
+  padding:0.5rem 1rem;
+  margin: 0 1rem;
 }
 .post-title{
   border: none;
@@ -273,17 +276,17 @@ input[type="checkbox"] {
 }
 
 .post-meta{
-  font-size:0.7em;
+  font-size:0.7rem;
   color: var(--border-color);
 }
 
 .post-desc{
-  font-size:0.8em;
+  font-size:0.8rem;
   margin:0;
 }
 
 .posts-container{
-  margin-bottom:2em;
+  margin-bottom:2rem;
 }
 
 img, video{
@@ -303,7 +306,7 @@ img, video{
 .icon-text{
   display:inline-flex;
   align-items: center;
-  gap:0.4em;
+  gap:0.4rem;
 }
 
 input[type="search"]{
@@ -314,7 +317,7 @@ input[type="search"]{
   min-width:max-content;
   border-bottom: 1px solid var(--border-color);
   color: var(--heading-color);
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 input[type="search"]:focus{
@@ -324,7 +327,7 @@ input[type="search"]:focus{
 .pagination-controls button{
   cursor: pointer;
   border: none;
-  margin: 0 1em;
+  margin: 0 1rem;
   background-color: var(--secondary-color);
   border-radius: 5px;
   color: var(--text-color); 
@@ -343,7 +346,7 @@ input[type="search"]:focus{
 }
 
 .rounded{
-  border-radius:0.5em;
+  border-radius:0.5rem;
 }
 
 #scrollTopBtn {
@@ -372,6 +375,10 @@ input[type="search"]:focus{
   pointer-events: auto;
 }
 
+div.math{
+  overflow-x:auto;
+}
+
 /* =========================
    Footer
    ========================= */
@@ -379,7 +386,7 @@ input[type="search"]:focus{
 footer {
   margin-top: 2rem;
   padding-top: 1rem;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   color: var(--border-color);
 }
 
@@ -392,7 +399,29 @@ footer {
 @media (max-width: 730px) {
     /* Styles for devices with a width of 600px or less */
   body{
-    max-width:90%;
+    max-width:100%;
+    padding: 10px;
+  }
+  .icon-text span, svg{
+    font-size: 0.7em;
+  }
+
+  p, li, code{
+    font-size:0.7rem;
+  }
+  code{
+    padding:0.1rem 0.3rem;
+  }
+  pre{
+    padding: 0.5rem;
+    line-height: 1;
+  }
+  div.math{
+    font-size:0.7rem;
+  }
+  .copy-btn {
+    opacity:0.6;
+    font-size:0.5rem;
   }
 }
 
